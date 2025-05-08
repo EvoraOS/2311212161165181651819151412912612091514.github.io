@@ -54,6 +54,7 @@
       position: relative;
       background-position: center;
       background-size: cover;
+      background-repeat: no-repeat;
       transition: transform 10s ease;
     }
     .apply-btn {
@@ -199,17 +200,17 @@
 
     <div class="swiper mySwiper">
       <div class="swiper-wrapper">
-        <!-- Slides -->
-        <div class="swiper-slide" style="background-image:url('https://picsum.photos/id/1015/400/700')">
+        <!-- Slides with your specified wallpaper filenames -->
+        <div class="swiper-slide" style="background-image:url('wall1.jpg')">
           <button class="apply-btn">Apply</button>
         </div>
-        <div class="swiper-slide" style="background-image:url('https://picsum.photos/id/1024/400/700')">
+        <div class="swiper-slide" style="background-image:url('wall2.jpg')">
           <button class="apply-btn">Apply</button>
         </div>
-        <div class="swiper-slide" style="background-image:url('https://picsum.photos/id/1035/400/700')">
+        <div class="swiper-slide" style="background-image:url('wall3.jpg')">
           <button class="apply-btn">Apply</button>
         </div>
-        <div class="swiper-slide" style="background-image:url('https://picsum.photos/id/1043/400/700')">
+        <div class="swiper-slide" style="background-image:url('wall4.jpg')">
           <button class="apply-btn">Apply</button>
         </div>
       </div>
@@ -225,7 +226,7 @@
   <div class="grid" style="grid-template-columns: 1fr 1fr; grid-template-rows: repeat(2, 1fr); gap: 8px; margin: 12px;">
     <!-- Left side - tall night sky wallpaper that spans two rows -->
     <div class="card-small night-sky-container" style="grid-row: span 2; height: 100%;">
-      <img class="night-sky-img" src="https://picsum.photos/id/1033/400/800" alt="Night Sky" style="height: 100%; object-fit: cover;" />
+      <img class="night-sky-img" src="night_sky.jpg" alt="Night Sky" style="height: 100%; object-fit: cover;" />
     </div>
     
     <!-- Top right - Categories section -->

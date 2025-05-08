@@ -43,27 +43,32 @@
     .flux-text .main { font-size: 18px; font-weight: 600; }
     .flux-text .sub { font-size: 12px; color: #666; margin-top: 2px; }
 
-    /* Swiper container with increased transition time */
-    .swiper { width: 100%; height: 340px; }
-    .swiper-wrapper { padding-top: 20px; }
+    /* Updated Swiper container styling to match the image */
+    .swiper { 
+      width: 100%; 
+      height: 260px; /* Reduced height */
+    }
+    .swiper-wrapper { 
+      padding-top: 10px; /* Reduced padding */
+    }
     .swiper-slide {
-      width: 160px;
-      height: 320px;
+      width: 120px; /* Smaller width */
+      height: 240px; /* Smaller height */
       border-radius: 14px;
       overflow: hidden;
       position: relative;
       background-position: center;
       background-size: cover;
       background-repeat: no-repeat;
-      transition: transform 10s ease;
+      transition: transform 0.5s ease;
     }
     .apply-btn {
       position: absolute;
       bottom: 12px;
       left: 50%;
       transform: translateX(-50%);
-      background: #000;
-      color: #fff;
+      background: #fff;
+      color: #000;
       padding: 6px 16px;
       border-radius: 999px;
       font-size: 12px;
@@ -76,8 +81,8 @@
     }
     
     .big-customize-btn {
-      background: #000;
-      color: #fff;
+      background: #fff;
+      color: #000;
       padding: 8px 20px;
       border-radius: 999px;
       font-size: 14px;
@@ -89,6 +94,21 @@
       margin-top: 15px;
       text-align: center;
     }
+    
+    /* Customize overlay for left wallpaper */
+    .wallpaper-container {
+      position: relative;
+      width: 100%;
+      height: 100%;
+    }
+    .customize-overlay {
+      position: absolute;
+      bottom: 20px;
+      left: 50%;
+      transform: translateX(-50%);
+      z-index: 10;
+    }
+    
     .swiper-slide-shadow-left, .swiper-slide-shadow-right { border-radius: 14px; }
     .swiper-slide-active { transform: scale(1.15); }
 
@@ -206,7 +226,7 @@
 </head>
 <body>
   <!-- Page title -->
-  <div class="page-title">Wallpapers & Personalization</div>
+  <div class="page-title">Wallpapers & style</div>
 
   <!-- Main Card with Swiper -->
   <div class="card">
@@ -222,22 +242,22 @@
       <div class="swiper-wrapper">
         <!-- Slides with your specified wallpaper filenames -->
         <div class="swiper-slide" style="background-image:url('wall1.jpg')">
-          <a href="customise.html" class="apply-btn">Customise</a>
+          <a href="customise.html" class="apply-btn">Apply</a>
         </div>
         <div class="swiper-slide" style="background-image:url('wall2.jpg')">
-          <a href="customise.html" class="apply-btn">Customise</a>
+          <a href="customise.html" class="apply-btn">Apply</a>
         </div>
         <div class="swiper-slide" style="background-image:url('wall3.jpg')">
-          <a href="customise.html" class="apply-btn">Customise</a>
+          <a href="customise.html" class="apply-btn">Apply</a>
         </div>
         <div class="swiper-slide" style="background-image:url('wall4.jpg')">
-          <a href="customise.html" class="apply-btn">Customise</a>
+          <a href="customise.html" class="apply-btn">Apply</a>
         </div>
       </div>
     </div>
 
     <div class="tabs">
-      <div id="tab-my" class="tab active">Customize</div>
+      <div id="tab-my" class="tab active">My themes</div>
       <div id="tab-more" class="tab">More themes</div>
     </div>
   </div>
@@ -246,30 +266,37 @@
   <div class="grid" style="grid-template-columns: 1fr 1fr; grid-template-rows: repeat(2, 1fr); gap: 8px; margin: 12px;">
     <!-- Left side - tall wallpaper that spans two rows -->
     <div class="card-small" style="grid-row: span 2; height: 100%; padding: 0;">
-      <div style="background: #fff; border-radius: 12px; height: 100%; padding: 10px; display: flex; flex-direction: column; justify-content: center; align-items: center;">
-        <img src="wall5.jpg" alt="Wallpaper" style="width: 90%; height: 80%; object-fit: cover; border-radius: 8px;" />
-        <a href="customise.html" class="big-customize-btn">Customise</a>
+      <div class="wallpaper-container">
+        <img src="wall5.jpg" alt="Wallpaper" style="width: 100%; height: 100%; object-fit: cover; border-radius: 12px;" />
+        <div class="customize-overlay">
+          <a href="customise.html" class="big-customize-btn">Customise</a>
+        </div>
       </div>
     </div>
     
     <!-- Top right - Categories section -->
     <div class="card-small" style="height: auto;">
-      <div class="categories">
-        <div class="categories-title">Categories</div>
-        <div class="categories-subtitle">Select your style</div>
+      <div style="display: flex; flex-direction: column; align-items: center; justify-content: center;">
+        <div style="font-size: 60px; font-weight: 400;">Aa</div>
+        <div style="font-size: 18px; color: #666; margin-top: 10px;">Font</div>
       </div>
     </div>
     
-    <!-- Bottom right - Favourite section -->
-    <div class="card-small" style="height: auto;">
-      <div class="favorites">
-        <div class="favorites-icon">
-          <svg class="heart-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="white" width="36px" height="36px">
-            <path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/>
+    <!-- Bottom right - App icons section -->
+    <div class="card-small" style="height: auto; display: flex; justify-content: center; align-items: center;">
+      <div style="display: flex; gap: 20px;">
+        <div style="background: #000; border-radius: 12px; width: 60px; height: 60px; display: flex; justify-content: center; align-items: center;">
+          <svg xmlns="http://www.w3.org/2000/svg" width="36" height="36" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"></polygon>
           </svg>
         </div>
-        <div class="favorites-title">Favourite</div>
-        <div class="favorites-subtitle">Here your love</div>
+        <div style="background: #000; border-radius: 12px; width: 60px; height: 60px; display: flex; justify-content: center; align-items: center;">
+          <svg xmlns="http://www.w3.org/2000/svg" width="36" height="36" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <rect x="2" y="2" width="20" height="20" rx="5" ry="5"></rect>
+            <circle cx="12" cy="12" r="3"></circle>
+            <circle cx="17" cy="7" r="1"></circle>
+          </svg>
+        </div>
       </div>
     </div>
   </div>
@@ -284,7 +311,7 @@
       slidesPerView: 'auto',
       loop: false,
       speed: 500,
-      coverflowEffect: { rotate: 0, stretch: 0, depth: 140, modifier: 2, slideShadows: false }
+      coverflowEffect: { rotate: 0, stretch: 0, depth: 100, modifier: 2, slideShadows: false }
     });
 
     // Tab interaction
@@ -298,4 +325,4 @@
     };
   </script>
 </body>
-</html>
+  </html>

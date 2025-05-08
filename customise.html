@@ -75,6 +75,7 @@
       height: 70%;
       border-radius: 20px;
       overflow: hidden;
+      box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
     }
     
     .wallpaper {
@@ -95,11 +96,19 @@
       font-weight: bold;
       text-align: center;
       text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
+      width: 100%;
+    }
+    
+    #main-text {
+      font-size: 72px;
+      font-weight: 800;
+      letter-spacing: 2px;
     }
     
     .text-subtitle {
       margin-top: 20px;
-      font-size: 24px;
+      font-size: 28px;
+      font-weight: 600;
     }
     
     /* Bottom toolbar */
@@ -112,6 +121,7 @@
       justify-content: space-around;
       padding: 16px;
       background: rgba(50, 50, 50, 0.5);
+      backdrop-filter: blur(10px);
       z-index: 10;
     }
     
@@ -144,7 +154,7 @@
 <body>
   <!-- Top navigation -->
   <div class="top-nav">
-    <a href="index.html" class="nav-button" id="cancel-btn">Cancel</a>
+    <a href="2.html" class="nav-button" id="cancel-btn">Cancel</a>
     <button class="nav-button" id="save-btn">Save</button>
   </div>
   
@@ -156,7 +166,7 @@
   <!-- Wallpaper container -->
   <div class="wallpaper-container">
     <img src="" id="selected-wallpaper" class="wallpaper" alt="Selected Wallpaper">
-    <div class="text-overlay" id="text-content" style="display: none;">
+    <div class="text-overlay" id="text-content">
       <div id="main-text">EVO</div>
       <div class="text-subtitle" id="subtitle-text">The Best Of<br>Evora</div>
     </div>
@@ -207,6 +217,9 @@
       // Set the wallpaper and background
       document.getElementById('selected-wallpaper').src = wallpaper;
       document.getElementById('blur-background').style.backgroundImage = 'url(' + wallpaper + ')';
+      
+      // Show text by default to match the example image
+      document.getElementById('text-content').style.display = 'block';
       
       // Initialize tool buttons
       document.getElementById('text-btn').addEventListener('click', function(e) {

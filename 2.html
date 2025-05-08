@@ -5,7 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Wallpapers & Personalization</title>
   <!-- Swiper CSS -->
-  <link rel="stylesheet" href="https://unpkg.com/swiper/swiper-bundle.min.css" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/Swiper/8.4.7/swiper-bundle.min.css" />
   <style>
     * { box-sizing: border-box; margin: 0; padding: 0; }
     body {
@@ -24,6 +24,7 @@
       margin: 12px;
       border-radius: 20px;
       padding: 12px;
+      box-shadow: 0 2px 10px rgba(0,0,0,0.05);
     }
     .card-top {
       display: flex;
@@ -55,7 +56,7 @@
       background-position: center;
       background-size: cover;
       background-repeat: no-repeat;
-      transition: transform 10s ease;
+      transition: transform 0.3s ease;
     }
     .apply-btn {
       position: absolute;
@@ -127,6 +128,7 @@
       display: flex;
       flex-direction: column;
       justify-content: center;
+      box-shadow: 0 2px 10px rgba(0,0,0,0.05);
     }
     .card-small img {
       width: 100%;
@@ -220,7 +222,7 @@
 
     <div class="swiper mySwiper">
       <div class="swiper-wrapper">
-        <!-- Slides with your specified wallpaper filenames - Updated with proper links -->
+        <!-- Slides with your specified wallpaper filenames -->
         <div class="swiper-slide" style="background-image:url('wall1.jpg')">
           <a href="customise.html?wallpaper=wall1.jpg" class="apply-btn">Customise</a>
         </div>
@@ -243,7 +245,7 @@
   </div>
 
   <!-- Bottom grid layout -->
-  <div class="grid" style="grid-template-columns: 1fr 1fr; grid-template-rows: repeat(2, 1fr); gap: 8px; margin: 12px;">
+  <div class="grid">
     <!-- Left side - tall wallpaper that spans two rows -->
     <div class="card-small" style="grid-row: span 2; height: 100%; padding: 0;">
       <div style="background: #fff; border-radius: 12px; height: 100%; padding: 10px; display: flex; flex-direction: column; justify-content: center; align-items: center;">
@@ -275,7 +277,7 @@
   </div>
 
   <!-- Swiper JS -->
-  <script src="https://unpkg.com/swiper/swiper-bundle.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/Swiper/8.4.7/swiper-bundle.min.js"></script>
   <script>
     const swiper = new Swiper('.mySwiper', {
       effect: 'coverflow',
@@ -284,7 +286,13 @@
       slidesPerView: 'auto',
       loop: false,
       speed: 500,
-      coverflowEffect: { rotate: 0, stretch: 0, depth: 140, modifier: 2, slideShadows: false }
+      coverflowEffect: {
+        rotate: 0,
+        stretch: 0,
+        depth: 140,
+        modifier: 2,
+        slideShadows: false
+      }
     });
 
     // Tab interaction
@@ -296,6 +304,14 @@
       document.getElementById('tab-more').classList.add('active');
       document.getElementById('tab-my').classList.remove('active');
     };
+    
+    // Ensure the customize buttons work properly
+    document.querySelectorAll('.apply-btn, .big-customize-btn').forEach(button => {
+      button.addEventListener('click', function(e) {
+        const url = this.getAttribute('href');
+        window.location.href = url;
+      });
+    });
   </script>
 </body>
   </html>

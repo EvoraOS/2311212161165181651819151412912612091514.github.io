@@ -70,6 +70,24 @@
       font-weight: 500;
       cursor: pointer;
       border: none;
+      text-decoration: none;
+      display: inline-block;
+      text-align: center;
+    }
+    
+    .big-customize-btn {
+      background: #000;
+      color: #fff;
+      padding: 8px 20px;
+      border-radius: 999px;
+      font-size: 14px;
+      font-weight: 500;
+      cursor: pointer;
+      border: none;
+      text-decoration: none;
+      display: inline-block;
+      margin-top: 15px;
+      text-align: center;
     }
     .swiper-slide-shadow-left, .swiper-slide-shadow-right { border-radius: 14px; }
     .swiper-slide-active { transform: scale(1.15); }
@@ -204,22 +222,22 @@
       <div class="swiper-wrapper">
         <!-- Slides with your specified wallpaper filenames -->
         <div class="swiper-slide" style="background-image:url('wall1.jpg')">
-          <button class="apply-btn">Customise</button>
+          <a href="customise.html" class="apply-btn">Customise</a>
         </div>
         <div class="swiper-slide" style="background-image:url('wall2.jpg')">
-          <button class="apply-btn">Customise</button>
+          <a href="customise.html" class="apply-btn">Customise</a>
         </div>
         <div class="swiper-slide" style="background-image:url('wall3.jpg')">
-          <button class="apply-btn">Customise</button>
+          <a href="customise.html" class="apply-btn">Customise</a>
         </div>
         <div class="swiper-slide" style="background-image:url('wall4.jpg')">
-          <button class="apply-btn">Customise</button>
+          <a href="customise.html" class="apply-btn">Customise</a>
         </div>
       </div>
     </div>
 
     <div class="tabs">
-      <div id="tab-my" class="tab active">Customisation</div>
+      <div id="tab-my" class="tab active">Customize</div>
       <div id="tab-more" class="tab">More themes</div>
     </div>
   </div>
@@ -229,7 +247,8 @@
     <!-- Left side - tall wallpaper that spans two rows -->
     <div class="card-small" style="grid-row: span 2; height: 100%; padding: 0;">
       <div style="background: #fff; border-radius: 12px; height: 100%; padding: 10px; display: flex; flex-direction: column; justify-content: center; align-items: center;">
-        <img src="wall5.jpg" alt="Wallpaper" style="width: 90%; height: 90%; object-fit: cover; border-radius: 8px;" />
+        <img src="wall5.jpg" alt="Wallpaper" style="width: 90%; height: 80%; object-fit: cover; border-radius: 8px;" />
+        <a href="customise.html" class="big-customize-btn">Customise</a>
       </div>
     </div>
     
@@ -279,4 +298,4 @@
     };
   </script>
 </body>
-  </html>
+          </html>

@@ -34,11 +34,12 @@
       padding: 8px 24px;
       border-radius: 999px;
       cursor: pointer;
+      text-decoration: none; /* Remove underline */
     }
     
     #cancel-btn {
-      background: rgba(255, 255, 255, 0.3);
-      text-decoration: none;
+      background: rgba(255, 255, 255, 0.8);
+      color: #000;
     }
     
     #save-btn {
@@ -63,7 +64,8 @@
       bottom: -20px;
       background-position: center;
       background-size: cover;
-      filter: blur(100px);
+      filter: blur(25px);
+      opacity: 0.9;
     }
     
     /* Wallpaper container */
@@ -72,11 +74,14 @@
       top: 50%;
       left: 50%;
       transform: translate(-50%, -50%);
-      width: 80%;
-      height: 60%;
+      width: 70%;
+      max-width: 360px;
+      height: 75%;
+      max-height: 720px;
       border-radius: 20px;
       overflow: hidden;
       box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
+      aspect-ratio: 9/19; /* Smartphone aspect ratio */
     }
     
     .wallpaper {
@@ -86,29 +91,29 @@
       border-radius: 20px;
     }
     
-    /* Text overlay for demonstration */
+    /* Text overlay draggable */
     .text-overlay {
       position: absolute;
       top: 50%;
       left: 50%;
       transform: translate(-50%, -50%);
       color: white;
-      font-size: 36px;
-      font-weight: bold;
       text-align: center;
       text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
-      width: 100%;
+      width: 80%;
+      cursor: move;
+      user-select: none;
     }
     
     #main-text {
-      font-size: 72px;
+      font-size: 64px;
       font-weight: 800;
       letter-spacing: 2px;
     }
     
     .text-subtitle {
       margin-top: 20px;
-      font-size: 28px;
+      font-size: 24px;
       font-weight: 600;
     }
     
@@ -121,8 +126,7 @@
       display: flex;
       justify-content: space-around;
       padding: 16px;
-      background: rgba(50, 50, 50, 0.5);
-      backdrop-filter: blur(10px);
+      background: transparent;
       z-index: 10;
     }
     
@@ -136,19 +140,79 @@
     }
     
     .tool-icon {
-      width: 50px;
-      height: 50px;
-      background-color: rgba(255, 255, 255, 0.2);
+      width: 55px;
+      height: 55px;
+      background-color: rgba(120, 120, 120, 0.7);
       border-radius: 50%;
       display: flex;
       justify-content: center;
       align-items: center;
       margin-bottom: 8px;
+      backdrop-filter: blur(5px);
     }
     
     .tool-text {
       font-size: 14px;
       text-align: center;
+    }
+    
+    /* Text edit popup */
+    .popup-container {
+      display: none;
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background-color: rgba(0, 0, 0, 0.7);
+      z-index: 20;
+      align-items: center;
+      justify-content: center;
+    }
+    
+    .text-editor {
+      background: white;
+      padding: 20px;
+      border-radius: 12px;
+      width: 80%;
+      max-width: 400px;
+    }
+    
+    .text-editor h3 {
+      margin-bottom: 15px;
+      font-size: 18px;
+    }
+    
+    .text-editor input, 
+    .text-editor textarea {
+      width: 100%;
+      padding: 10px;
+      margin-bottom: 15px;
+      border: 1px solid #ddd;
+      border-radius: 8px;
+      font-size: 16px;
+    }
+    
+    .button-row {
+      display: flex;
+      justify-content: space-between;
+    }
+    
+    .popup-btn {
+      padding: 10px 20px;
+      border: none;
+      border-radius: 8px;
+      font-size: 16px;
+      cursor: pointer;
+    }
+    
+    .cancel-popup {
+      background: #eee;
+    }
+    
+    .apply-text {
+      background: #000;
+      color: white;
     }
   </style>
 </head>
@@ -177,14 +241,14 @@
   <div class="bottom-toolbar">
     <a href="#" class="tool-button" id="text-btn">
       <div class="tool-icon">
-        <span style="font-size: 24px; font-weight: bold;">Tt</span>
+        <span style="font-size: 24px; font-weight: bold; color: white;">Tt</span>
       </div>
       <span class="tool-text">Add Text</span>
     </a>
     
     <a href="#" class="tool-button" id="size-btn">
       <div class="tool-icon">
-        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
           <rect x="3" y="3" width="18" height="18" rx="2" ry="2"></rect>
         </svg>
       </div>
@@ -193,7 +257,7 @@
     
     <a href="#" class="tool-button" id="stickers-btn">
       <div class="tool-icon">
-        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
           <polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"></polygon>
         </svg>
       </div>
@@ -201,13 +265,102 @@
     </a>
   </div>
   
+  <!-- Text Edit Popup -->
+  <div class="popup-container" id="text-popup">
+    <div class="text-editor">
+      <h3>Add Text</h3>
+      <input type="text" id="main-text-input" placeholder="Main Text">
+      <textarea id="subtitle-input" placeholder="Subtitle Text"></textarea>
+      <div class="button-row">
+        <button class="popup-btn cancel-popup" id="cancel-text-btn">Cancel</button>
+        <button class="popup-btn apply-text" id="apply-text-btn">Apply</button>
+      </div>
+    </div>
+  </div>
+  
   <script>
     // Function to get URL parameters
     function getUrlParameter(name) {
-      name = name.replace(/[]/, '\').replace(/[]/, '\');
+      name = name.replace(/[\[]/, '\\[').replace(/[\]]/, '\\]');
       var regex = new RegExp('[\\?&]' + name + '=([^&#]*)');
       var results = regex.exec(location.search);
       return results === null ? '' : decodeURIComponent(results[1].replace(/\+/g, ' '));
+    }
+    
+    // Drag functionality
+    function makeDraggable(element) {
+      let isDragging = false;
+      let offsetX, offsetY;
+      
+      element.addEventListener('mousedown', startDrag);
+      element.addEventListener('touchstart', startDragTouch, { passive: false });
+      
+      function startDrag(e) {
+        isDragging = true;
+        offsetX = e.clientX - element.getBoundingClientRect().left;
+        offsetY = e.clientY - element.getBoundingClientRect().top;
+        
+        document.addEventListener('mousemove', drag);
+        document.addEventListener('mouseup', stopDrag);
+      }
+      
+      function startDragTouch(e) {
+        isDragging = true;
+        offsetX = e.touches[0].clientX - element.getBoundingClientRect().left;
+        offsetY = e.touches[0].clientY - element.getBoundingClientRect().top;
+        
+        document.addEventListener('touchmove', dragTouch, { passive: false });
+        document.addEventListener('touchend', stopDragTouch);
+        
+        e.preventDefault();
+      }
+      
+      function drag(e) {
+        if (!isDragging) return;
+        
+        const container = document.querySelector('.wallpaper-container');
+        const containerRect = container.getBoundingClientRect();
+        
+        let left = e.clientX - containerRect.left - offsetX;
+        let top = e.clientY - containerRect.top - offsetY;
+        
+        // Keep within container bounds
+        const elementRect = element.getBoundingClientRect();
+        left = Math.max(-elementRect.width/2, Math.min(left, containerRect.width - elementRect.width/2));
+        top = Math.max(-elementRect.height/2, Math.min(top, containerRect.height - elementRect.height/2));
+        
+        element.style.transform = `translate(${left}px, ${top}px)`;
+      }
+      
+      function dragTouch(e) {
+        if (!isDragging) return;
+        
+        const container = document.querySelector('.wallpaper-container');
+        const containerRect = container.getBoundingClientRect();
+        
+        let left = e.touches[0].clientX - containerRect.left - offsetX;
+        let top = e.touches[0].clientY - containerRect.top - offsetY;
+        
+        // Keep within container bounds
+        const elementRect = element.getBoundingClientRect();
+        left = Math.max(-elementRect.width/2, Math.min(left, containerRect.width - elementRect.width/2));
+        top = Math.max(-elementRect.height/2, Math.min(top, containerRect.height - elementRect.height/2));
+        
+        element.style.transform = `translate(${left}px, ${top}px)`;
+        e.preventDefault();
+      }
+      
+      function stopDrag() {
+        isDragging = false;
+        document.removeEventListener('mousemove', drag);
+        document.removeEventListener('mouseup', stopDrag);
+      }
+      
+      function stopDragTouch() {
+        isDragging = false;
+        document.removeEventListener('touchmove', dragTouch);
+        document.removeEventListener('touchend', stopDragTouch);
+      }
     }
     
     // Set the wallpaper based on URL parameter
@@ -222,10 +375,17 @@
       // Show text by default to match the example image
       document.getElementById('text-content').style.display = 'block';
       
+      // Make text overlay draggable
+      makeDraggable(document.getElementById('text-content'));
+      
+      // Initialize text editor with current values
+      document.getElementById('main-text-input').value = document.getElementById('main-text').innerText;
+      document.getElementById('subtitle-input').value = document.getElementById('subtitle-text').innerText.replace('<br>', '\n');
+      
       // Initialize tool buttons
       document.getElementById('text-btn').addEventListener('click', function(e) {
         e.preventDefault();
-        toggleTextEditor();
+        showTextEditor();
       });
       
       document.getElementById('size-btn').addEventListener('click', function(e) {
@@ -238,6 +398,16 @@
         e.preventDefault();
         // Stickers functionality will be added later
         alert('Stickers feature coming soon!');
+      });
+      
+      // Text editor popup
+      document.getElementById('cancel-text-btn').addEventListener('click', function() {
+        hideTextEditor();
+      });
+      
+      document.getElementById('apply-text-btn').addEventListener('click', function() {
+        applyTextChanges();
+        hideTextEditor();
       });
       
       // Save button functionality
@@ -257,10 +427,30 @@
       });
     });
     
-    // Toggle text editor
-    function toggleTextEditor() {
-      var textContent = document.getElementById('text-content');
-      textContent.style.display = textContent.style.display === 'none' ? 'block' : 'none';
+    // Show text editor popup
+    function showTextEditor() {
+      document.getElementById('text-popup').style.display = 'flex';
+      
+      // Update input fields with current text
+      document.getElementById('main-text-input').value = document.getElementById('main-text').innerText;
+      document.getElementById('subtitle-input').value = document.getElementById('subtitle-text').innerText.replace(/<br>/g, '\n');
+    }
+    
+    // Hide text editor popup
+    function hideTextEditor() {
+      document.getElementById('text-popup').style.display = 'none';
+    }
+    
+    // Apply text changes
+    function applyTextChanges() {
+      const mainText = document.getElementById('main-text-input').value;
+      const subtitleText = document.getElementById('subtitle-input').value;
+      
+      document.getElementById('main-text').innerText = mainText;
+      document.getElementById('subtitle-text').innerHTML = subtitleText.replace(/\n/g, '<br>');
+      
+      // Reset position after text change
+      document.getElementById('text-content').style.transform = 'translate(-50%, -50%)';
     }
     
     // Function to download the edited wallpaper
@@ -277,23 +467,44 @@
       // If text is visible, draw it on canvas
       var textContent = document.getElementById('text-content');
       if (textContent.style.display !== 'none') {
+        // Calculate position
+        const container = document.querySelector('.wallpaper-container');
+        const containerRect = container.getBoundingClientRect();
+        const textRect = textContent.getBoundingClientRect();
+        
+        // Get transform matrix values
+        const style = window.getComputedStyle(textContent);
+        const matrix = new DOMMatrixReadOnly(style.transform);
+        
+        // Calculate position in percentage
+        const leftPercent = (matrix.m41 + containerRect.width/2) / containerRect.width;
+        const topPercent = (matrix.m42 + containerRect.height/2) / containerRect.height;
+        
         // Set text styles
-        ctx.font = 'bold 72px Arial';
-        ctx.fillStyle = 'white';
         ctx.textAlign = 'center';
         ctx.textBaseline = 'middle';
+        ctx.fillStyle = 'white';
         ctx.shadowColor = 'rgba(0, 0, 0, 0.5)';
         ctx.shadowBlur = 10;
         ctx.shadowOffsetX = 2;
         ctx.shadowOffsetY = 2;
         
+        // Calculate positions on canvas
+        const x = canvas.width * leftPercent;
+        const y = canvas.height * topPercent;
+        
         // Draw main text
-        ctx.fillText('EVO', canvas.width / 2, canvas.height / 2 - 40);
+        const mainText = document.getElementById('main-text').innerText;
+        ctx.font = 'bold 72px Arial';
+        ctx.fillText(mainText, x, y - 40);
         
         // Draw subtitle
+        const subtitleLines = document.getElementById('subtitle-text').innerHTML.split('<br>');
         ctx.font = 'bold 36px Arial';
-        ctx.fillText('The Best Of', canvas.width / 2, canvas.height / 2 + 30);
-        ctx.fillText('Evora', canvas.width / 2, canvas.height / 2 + 80);
+        
+        for (let i = 0; i < subtitleLines.length; i++) {
+          ctx.fillText(subtitleLines[i], x, y + 30 + i * 50);
+        }
       }
       
       // Create download link
@@ -304,4 +515,4 @@
     }
   </script>
 </body>
-          </html>
+  </html>

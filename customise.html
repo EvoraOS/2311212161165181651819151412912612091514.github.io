@@ -126,7 +126,7 @@
       display: flex;
       justify-content: space-around;
       padding: 16px;
-      background: transparent;
+      background: rgba(200, 200, 200, 0.5);
       z-index: 10;
     }
     
@@ -142,7 +142,7 @@
     .tool-icon {
       width: 50px;
       height: 50px;
-      background-color: rgba(120, 120, 120, 0.7);
+      background-color: rgba(128, 128, 128, 0.7);
       border-radius: 50%;
       display: flex;
       justify-content: center;
@@ -232,7 +232,7 @@
     <img src="" id="selected-wallpaper" class="wallpaper" alt="Selected Wallpaper">
     <div class="text-overlay" id="text-content">
       <div id="main-text">EVO</div>
-      <div class="text-subtitle" id="subtitle-text">The Best Of<br>Evora</div>
+      <div class="text-subtitle" id="subtitle-text"></div>
     </div>
   </div>
   
@@ -527,7 +527,9 @@
         ctx.font = 'bold 36px Arial';
         
         for (let i = 0; i < subtitleLines.length; i++) {
-          ctx.fillText(subtitleLines[i], x, y + 30 + i * 50);
+          if (subtitleLines[i].trim()) {
+            ctx.fillText(subtitleLines[i], x, y + 30 + i * 50);
+          }
         }
       }
       
@@ -539,4 +541,4 @@
     }
   </script>
 </body>
-  </html>
+          </html>

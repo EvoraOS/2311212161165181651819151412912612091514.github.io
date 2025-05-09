@@ -103,6 +103,7 @@
       width: 80%;
       cursor: move;
       user-select: none;
+      display: none; /* Hide text by default */
     }
     
     #main-text {
@@ -126,7 +127,7 @@
       display: flex;
       justify-content: space-around;
       padding: 16px;
-      background: rgba(200, 200, 200, 0.5);
+      background: transparent;
       z-index: 10;
     }
     
@@ -142,7 +143,7 @@
     .tool-icon {
       width: 50px;
       height: 50px;
-      background-color: rgba(128, 128, 128, 0.7);
+      background-color: rgba(120, 120, 120, 0.7);
       border-radius: 50%;
       display: flex;
       justify-content: center;
@@ -213,6 +214,14 @@
       color: white;
       padding: 12px 30px;
     }
+
+    /* Fix for fullscreen display */
+    @media screen and (min-width: 1024px) {
+      .wallpaper-container {
+        max-width: 400px;
+        max-height: 800px;
+      }
+    }
   </style>
 </head>
 <body>
@@ -231,7 +240,7 @@
   <div class="wallpaper-container">
     <img src="" id="selected-wallpaper" class="wallpaper" alt="Selected Wallpaper">
     <div class="text-overlay" id="text-content">
-      <div id="main-text">EVO</div>
+      <div id="main-text"></div>
       <div class="text-subtitle" id="subtitle-text"></div>
     </div>
   </div>
@@ -369,21 +378,14 @@
       document.getElementById('selected-wallpaper').src = wallpaper;
       document.getElementById('blur-background').style.backgroundImage = 'url(' + wallpaper + ')';
       
-      // Show text by default to match the example image
-      document.getElementById('text-content').style.display = 'block';
+      // Hide text overlay by default until user adds text
+      document.getElementById('text-content').style.display = 'none';
       
       // Make text overlay draggable
       makeDraggable(document.getElementById('text-content'));
       
-      // Initialize text editor with current values
-      const mainText = document.getElementById('main-text').innerText;
-      const subtitleText = document.getElementById('subtitle-text').innerHTML.replace(/<br>/g, '\n');
-      
-      if (subtitleText.trim()) {
-        document.getElementById('text-input').value = mainText + '\n' + subtitleText;
-      } else {
-        document.getElementById('text-input').value = mainText;
-      }
+      // Initialize text editor with empty values
+      document.getElementById('text-input').value = '';
       
       // Initialize tool buttons
       document.getElementById('text-btn').addEventListener('click', function(e) {
@@ -459,6 +461,15 @@
     function applyTextChanges() {
       const text = document.getElementById('text-input').value;
       
+      if (text.trim() === '') {
+        // If no text entered, hide the text overlay
+        document.getElementById('text-content').style.display = 'none';
+        return;
+      }
+      
+      // Show text overlay
+      document.getElementById('text-content').style.display = 'block';
+      
       // If there's a line break, split into main text and subtitle
       if (text.includes('\n')) {
         const lines = text.split('\n');
@@ -527,9 +538,7 @@
         ctx.font = 'bold 36px Arial';
         
         for (let i = 0; i < subtitleLines.length; i++) {
-          if (subtitleLines[i].trim()) {
-            ctx.fillText(subtitleLines[i], x, y + 30 + i * 50);
-          }
+          ctx.fillText(subtitleLines[i], x, y + 30 + i * 50);
         }
       }
       
@@ -541,4 +550,4 @@
     }
   </script>
 </body>
-          </html>
+  </html>

@@ -140,8 +140,8 @@
     }
     
     .tool-icon {
-      width: 55px;
-      height: 55px;
+      width: 50px;
+      height: 50px;
       background-color: rgba(120, 120, 120, 0.7);
       border-radius: 50%;
       display: flex;
@@ -164,55 +164,54 @@
       left: 0;
       right: 0;
       bottom: 0;
-      background-color: rgba(0, 0, 0, 0.7);
+      background-color: rgba(0, 0, 0, 0.4);
       z-index: 20;
-      align-items: center;
+      align-items: flex-end;
       justify-content: center;
     }
     
     .text-editor {
       background: white;
       padding: 20px;
-      border-radius: 12px;
-      width: 80%;
-      max-width: 400px;
+      border-radius: 30px 30px 0 0;
+      width: 100%;
+      max-height: 80vh;
     }
     
-    .text-editor h3 {
-      margin-bottom: 15px;
-      font-size: 18px;
-    }
-    
-    .text-editor input, 
     .text-editor textarea {
       width: 100%;
-      padding: 10px;
-      margin-bottom: 15px;
-      border: 1px solid #ddd;
-      border-radius: 8px;
+      padding: 15px;
+      border: 1px solid #eee;
+      border-radius: 15px;
       font-size: 16px;
+      background-color: #f8f8f8;
+      color: #666;
     }
     
     .button-row {
       display: flex;
       justify-content: space-between;
+      margin-bottom: 20px;
     }
     
     .popup-btn {
-      padding: 10px 20px;
+      padding: 12px 25px;
       border: none;
-      border-radius: 8px;
+      border-radius: 999px;
       font-size: 16px;
+      font-weight: 500;
       cursor: pointer;
     }
     
     .cancel-popup {
-      background: #eee;
+      background: #e6e6e6;
+      color: #000;
     }
     
     .apply-text {
       background: #000;
       color: white;
+      padding: 12px 30px;
     }
   </style>
 </head>
@@ -268,13 +267,11 @@
   <!-- Text Edit Popup -->
   <div class="popup-container" id="text-popup">
     <div class="text-editor">
-      <h3>Add Text</h3>
-      <input type="text" id="main-text-input" placeholder="Main Text">
-      <textarea id="subtitle-input" placeholder="Subtitle Text"></textarea>
-      <div class="button-row">
+      <div class="button-row" style="margin-bottom: 20px;">
         <button class="popup-btn cancel-popup" id="cancel-text-btn">Cancel</button>
-        <button class="popup-btn apply-text" id="apply-text-btn">Apply</button>
+        <button class="popup-btn apply-text" id="apply-text-btn">Add Text</button>
       </div>
+      <textarea id="text-input" placeholder="Enter your text here..." rows="10" style="resize: none;"></textarea>
     </div>
   </div>
   
@@ -379,8 +376,14 @@
       makeDraggable(document.getElementById('text-content'));
       
       // Initialize text editor with current values
-      document.getElementById('main-text-input').value = document.getElementById('main-text').innerText;
-      document.getElementById('subtitle-input').value = document.getElementById('subtitle-text').innerText.replace('<br>', '\n');
+      const mainText = document.getElementById('main-text').innerText;
+      const subtitleText = document.getElementById('subtitle-text').innerHTML.replace(/<br>/g, '\n');
+      
+      if (subtitleText.trim()) {
+        document.getElementById('text-input').value = mainText + '\n' + subtitleText;
+      } else {
+        document.getElementById('text-input').value = mainText;
+      }
       
       // Initialize tool buttons
       document.getElementById('text-btn').addEventListener('click', function(e) {
@@ -431,9 +434,20 @@
     function showTextEditor() {
       document.getElementById('text-popup').style.display = 'flex';
       
-      // Update input fields with current text
-      document.getElementById('main-text-input').value = document.getElementById('main-text').innerText;
-      document.getElementById('subtitle-input').value = document.getElementById('subtitle-text').innerText.replace(/<br>/g, '\n');
+      // Update input field with current text
+      const mainText = document.getElementById('main-text').innerText;
+      const subtitleText = document.getElementById('subtitle-text').innerHTML.replace(/<br>/g, '\n');
+      
+      if (subtitleText.trim()) {
+        document.getElementById('text-input').value = mainText + '\n' + subtitleText;
+      } else {
+        document.getElementById('text-input').value = mainText;
+      }
+      
+      // Focus on the text input
+      setTimeout(() => {
+        document.getElementById('text-input').focus();
+      }, 300);
     }
     
     // Hide text editor popup
@@ -443,11 +457,21 @@
     
     // Apply text changes
     function applyTextChanges() {
-      const mainText = document.getElementById('main-text-input').value;
-      const subtitleText = document.getElementById('subtitle-input').value;
+      const text = document.getElementById('text-input').value;
       
-      document.getElementById('main-text').innerText = mainText;
-      document.getElementById('subtitle-text').innerHTML = subtitleText.replace(/\n/g, '<br>');
+      // If there's a line break, split into main text and subtitle
+      if (text.includes('\n')) {
+        const lines = text.split('\n');
+        const mainText = lines[0];
+        const subtitleText = lines.slice(1).join('\n');
+        
+        document.getElementById('main-text').innerText = mainText;
+        document.getElementById('subtitle-text').innerHTML = subtitleText.replace(/\n/g, '<br>');
+      } else {
+        // Only main text
+        document.getElementById('main-text').innerText = text;
+        document.getElementById('subtitle-text').innerHTML = '';
+      }
       
       // Reset position after text change
       document.getElementById('text-content').style.transform = 'translate(-50%, -50%)';

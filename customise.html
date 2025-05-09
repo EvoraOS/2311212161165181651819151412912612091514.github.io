@@ -48,39 +48,42 @@
     
     /* Background blur container */
     .blur-container {
-      position: absolute;
+      position: fixed;
       top: 0;
       left: 0;
       right: 0;
       bottom: 0;
       overflow: hidden;
+      width: 100vw;
+      height: 100vh;
+      z-index: -1;
     }
     
     .blur-bg {
       position: absolute;
-      top: -20px;
-      left: -20px;
-      right: -20px;
-      bottom: -20px;
+      top: -50px;
+      left: -50px;
+      right: -50px;
+      bottom: -50px;
       background-position: center;
       background-size: cover;
       filter: blur(25px);
       opacity: 0.9;
+      width: calc(100% + 100px);
+      height: calc(100% + 100px);
     }
     
     /* Wallpaper container */
     .wallpaper-container {
-      position: absolute;
+      position: fixed;
       top: 50%;
       left: 50%;
       transform: translate(-50%, -50%);
-      width: 70%;
-      max-width: 360px;
-      height: 75%;
-      max-height: 720px;
+      width: min(70%, 360px); /* Use the smaller of 70% or 360px */
+      height: min(75%, 720px); /* Use the smaller of 75% or 720px */
       border-radius: 20px;
       overflow: hidden;
-      box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
+      box-shadow: 0 4px 30px rgba(0, 0, 0, 0.3);
       aspect-ratio: 9/19; /* Smartphone aspect ratio */
     }
     
@@ -127,7 +130,8 @@
       display: flex;
       justify-content: space-around;
       padding: 16px;
-      background: transparent;
+      background: rgba(70, 70, 70, 0.3);
+      backdrop-filter: blur(8px);
       z-index: 10;
     }
     
@@ -218,8 +222,37 @@
     /* Fix for fullscreen display */
     @media screen and (min-width: 1024px) {
       .wallpaper-container {
-        max-width: 400px;
-        max-height: 800px;
+        width: 400px;
+        height: auto; /* Let aspect ratio control height */
+        aspect-ratio: 9/19;
+      }
+      
+      .tool-icon {
+        width: 60px;
+        height: 60px;
+      }
+      
+      .tool-text {
+        font-size: 16px;
+      }
+      
+      #main-text {
+        font-size: 72px;
+      }
+      
+      .text-subtitle {
+        font-size: 28px;
+      }
+    }
+    
+    /* Fix for very small screens */
+    @media screen and (max-height: 600px) {
+      .wallpaper-container {
+        height: 70%;
+      }
+      
+      .bottom-toolbar {
+        padding: 8px 16px;
       }
     }
   </style>
@@ -550,4 +583,4 @@
     }
   </script>
 </body>
-  </html>
+        </html>

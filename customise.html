@@ -80,7 +80,7 @@
       left: 50%;
       transform: translate(-50%, -50%);
       width: min(70%, 360px); /* Use the smaller of 70% or 360px */
-      height: min(75%, 670px); /* Use the smaller of 75% or 720px */
+      height: min(75%, 720px); /* Use the smaller of 75% or 720px */
       border-radius: 20px;
       overflow: hidden;
       box-shadow: 0 4px 30px rgba(0, 0, 0, 0.3);
@@ -129,10 +129,9 @@
       right: 0;
       display: flex;
       justify-content: space-around;
-      padding: 16px;
-      background: rgba(70, 70, 70, 0.3);
-      backdrop-filter: blur(0px);
-      z-index: 0;
+      padding: 16px
+      backdrop-filter: blur(8px);
+      z-index: 10;
     }
     
     .tool-button {

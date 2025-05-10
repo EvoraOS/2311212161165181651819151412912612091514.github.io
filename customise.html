@@ -146,13 +146,22 @@
     .tool-icon {
       width: 50px;
       height: 50px;
-      background-color: rgba(120, 120, 120, 0.7);
+      background-color: rgba(100, 100, 100, 0.5);
       border-radius: 50%;
       display: flex;
       justify-content: center;
       align-items: center;
       margin-bottom: 8px;
-      backdrop-filter: blur(5px);
+      backdrop-filter: blur(8px);
+    }
+    
+    /* Active state for tool buttons */
+    .tool-button.active .tool-icon {
+      background-color: #000;
+    }
+    
+    .tool-button.active .tool-text {
+      font-weight: bold;
     }
     
     .tool-text {
@@ -422,20 +431,36 @@
       // Initialize tool buttons
       document.getElementById('text-btn').addEventListener('click', function(e) {
         e.preventDefault();
+        // Add active class to text button
+        resetActiveButtons();
+        this.classList.add('active');
         showTextEditor();
       });
       
       document.getElementById('size-btn').addEventListener('click', function(e) {
         e.preventDefault();
+        // Add active class to size button
+        resetActiveButtons();
+        this.classList.add('active');
         // Size functionality will be added later
         alert('Size adjustment feature coming soon!');
       });
       
       document.getElementById('stickers-btn').addEventListener('click', function(e) {
         e.preventDefault();
+        // Add active class to stickers button
+        resetActiveButtons();
+        this.classList.add('active');
         // Stickers functionality will be added later
         alert('Stickers feature coming soon!');
       });
+      
+      // Function to reset all active buttons
+      function resetActiveButtons() {
+        document.querySelectorAll('.tool-button').forEach(button => {
+          button.classList.remove('active');
+        });
+      }
       
       // Text editor popup
       document.getElementById('cancel-text-btn').addEventListener('click', function() {
@@ -487,6 +512,10 @@
     // Hide text editor popup
     function hideTextEditor() {
       document.getElementById('text-popup').style.display = 'none';
+      // If no text was added, remove active state from text button
+      if (document.getElementById('text-content').style.display === 'none') {
+        document.getElementById('text-btn').classList.remove('active');
+      }
     }
     
     // Apply text changes
@@ -582,4 +611,4 @@
     }
   </script>
 </body>
-  </html>
+                                                                            </html>

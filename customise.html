@@ -28,6 +28,27 @@
       align-items: center;
       margin-bottom: 40px;
     }
+    /* Sticky collapsing header */
+.sticky-header {
+  position: sticky;
+  top: 0;
+  background: #f5f5f5;
+  z-index: 999;
+  padding: 20px 20px 10px;
+  transition: all 0.3s ease;
+}
+
+.sticky-header.shrink .title {
+  font-size: 20px;
+}
+
+.sticky-header.shrink .back-btn {
+  width: 32px;
+  height: 32px;
+  font-size: 20px;
+  background-color: #fff;
+  box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+}
     
     .back-btn {
       display: flex;
@@ -476,6 +497,16 @@
       // Prevent default link behavior
       event.preventDefault();
     }
-  </script>
+    
+  // Title shrink on scroll
+  window.addEventListener('scroll', function () {
+    const header = document.querySelector('.sticky-header');
+    if (window.scrollY > 10) {
+      header.classList.add('shrink');
+    } else {
+      header.classList.remove('shrink');
+    }
+  });
+    </script>
 </body>
           </html>

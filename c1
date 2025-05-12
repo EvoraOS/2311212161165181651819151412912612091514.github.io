@@ -1,0 +1,195 @@
+<!DOCTYPE html><html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Wallpaper Categories</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/locomotive-scroll/4.1.4/locomotive-scroll.min.css"/>
+  <style>
+    /* Reset & font */
+    * { margin:0; padding:0; box-sizing:border-box;
+        font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Arial,sans-serif; }body {
+  background: #f5f5f5;
+  overflow-x: hidden;
+}
+
+/* Container */
+.container {
+  padding: 20px;
+  width: 100%;
+}
+
+/* Sticky Header */
+.sticky-header {
+  position: sticky;
+  top: 0;
+  background: #f5f5f5;
+  z-index: 999;
+  display: flex;
+  align-items: center;
+  padding: 20px 20px 10px;
+  transition: all 0.3s ease;
+}
+
+.sticky-header .title {
+  font-size: 32px;
+  font-weight: bold;
+  transition: font-size 0.3s ease;
+}
+
+.sticky-header.shrink {
+  background: #ffffff;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+}
+
+.sticky-header.shrink .title {
+  font-size: 20px;
+}
+
+.back-btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 40px;
+  height: 40px;
+  margin-right: 15px;
+  font-size: 24px;
+  font-weight: bold;
+  color: #000;
+  text-decoration: none;
+  background: #fff;
+  border-radius: 50%;
+  box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+  transition: all 0.3s ease;
+}
+
+.sticky-header.shrink .back-btn {
+  width: 32px;
+  height: 32px;
+  font-size: 20px;
+}
+
+/* Category Titles */
+.category-title {
+  font-size: 36px;
+  font-weight: bold;
+  margin-bottom: 20px;
+}
+
+/* Horizontal scroller */
+.wallpapers-container {
+  display: flex;
+  overflow-x: auto;
+  gap: 15px;
+  padding: 10px 0;
+  scrollbar-width: none;
+}
+.wallpapers-container::-webkit-scrollbar { display: none; }
+
+.wallpaper-card {
+  position: relative;
+  min-width: 160px;
+  height: 320px;
+  border-radius: 14px;
+  overflow: hidden;
+  box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+}
+.wallpaper-img {
+  width:100%; height:100%;
+  object-fit:cover;
+  transition: transform .3s ease;
+}
+.wallpaper-card:hover .wallpaper-img {
+  transform: scale(1.05);
+}
+
+.overlay {
+  position:absolute; bottom:0; left:0; right:0;
+  padding:15px;
+  background: linear-gradient(transparent, rgba(0,0,0,0.7));
+  display:flex; justify-content:center;
+}
+.download-btn {
+  background:#000; color:#fff;
+  padding:8px 20px; border-radius:999px;
+  font-size:14px; font-weight:500;
+  text-decoration:none; cursor:pointer;
+  transition:background .3s;
+}
+.download-btn:hover { background:#333; }
+
+.main-action-btn {
+  display:block; max-width:300px; width:100%;
+  margin:40px auto;
+  background:#000; color:#fff;
+  padding:15px 20px; border-radius:999px;
+  font-size:16px; font-weight:500;
+  text-align:center; text-decoration:none;
+  transition:background .3s;
+}
+.main-action-btn:hover { background:#333; }
+
+  </style>
+</head>
+<body>
+  <div data-scroll-container class="container">
+    <!-- Header -->
+    <div class="sticky-header" data-scroll data-scroll-speed="1">
+      <a href="javascript:history.back()" class="back-btn">&lt;</a>
+      <h1 class="title">Categories</h1>
+    </div><!-- Categories -->
+<section class="category-section" data-scroll data-scroll-speed="1">
+  <h2 class="category-title">Nature</h2>
+  <div class="wallpapers-container">
+    <!-- Cards... -->
+  </div>
+</section>
+<section class="category-section" data-scroll data-scroll-speed="1">
+  <h2 class="category-title">Buildings</h2>
+  <div class="wallpapers-container"></div>
+</section>
+<section class="category-section" data-scroll data-scroll-speed="1">
+  <h2 class="category-title">Abstract</h2>
+  <div class="wallpapers-container"></div>
+</section>
+<section class="category-section" data-scroll data-scroll-speed="1">
+  <h2 class="category-title">Minimalist</h2>
+  <div class="wallpapers-container"></div>
+</section>
+<section class="category-section" data-scroll data-scroll-speed="1">
+  <h2 class="category-title">Dark</h2>
+  <div class="wallpapers-container"></div>
+</section>
+<section class="category-section" data-scroll data-scroll-speed="1">
+  <h2 class="category-title">Space</h2>
+  <div class="wallpapers-container"></div>
+</section>
+<section class="category-section" data-scroll data-scroll-speed="1">
+  <h2 class="category-title">Anime</h2>
+  <div class="wallpapers-container"></div>
+</section>
+
+<a href="wallpaper.html" class="main-action-btn">View All Wallpapers</a>
+
+  </div>  <script src="https://cdnjs.cloudflare.com/ajax/libs/locomotive-scroll/4.1.4/locomotive-scroll.min.js"></script>  <script>
+    document.addEventListener('DOMContentLoaded', function() {
+      const scroll = new LocomotiveScroll({ el: document.querySelector('[data-scroll-container]'), smooth: true });
+      const header = document.querySelector('.sticky-header');
+      scroll.on('scroll', args => {
+        if (args.scroll.y > 10) header.classList.add('shrink'); else header.classList.remove('shrink');
+      });
+      window.addEventListener('resize', () => scroll.update());
+    });
+
+    function downloadWallpaper(id) {
+      const card = event.target.closest('.wallpaper-card');
+      const img = card.querySelector('.wallpaper-img');
+      const link = document.createElement('a');
+      link.href = img.src;
+      link.download = `wallpaper-${id}.jpg`;
+      document.body.appendChild(link);
+      link.click();
+      document.body.removeChild(link);
+      event.preventDefault();
+    }
+  </script></body>
+</html>

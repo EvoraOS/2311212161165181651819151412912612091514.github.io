@@ -28,7 +28,9 @@
       align-items: center;
       margin-bottom: 40px;
     }
+    
     /* Sticky collapsing header */
+    
 .sticky-header {
   position: sticky;
   top: 0;
@@ -38,10 +40,11 @@
   transition: all 0.3s ease;
 }
 
-.sticky-header.shrink .title {
-  font-size: 20px;
+.sticky-header.shrink {
+  background: #ffffff;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
 }
-
+    
 .sticky-header.shrink .back-btn {
   width: 32px;
   height: 32px;
@@ -186,7 +189,7 @@
 </head>
 <body>
   <div data-scroll-container class="container">
-    <div class="header" data-scroll data-scroll-speed="1">
+    <div class="header sticky-header" data-scroll data-scroll-speed="1">
       <a href="javascript:history.back()" class="back-btn">&lt;</a>
       <h1 class="title">Categories</h1>
     </div>
@@ -498,15 +501,28 @@
       event.preventDefault();
     }
     
-  // Title shrink on scroll
-  window.addEventListener('scroll', function () {
-    const header = document.querySelector('.sticky-header');
-    if (window.scrollY > 10) {
+document.addEventListener('DOMContentLoaded', function() {
+  const scroll = new LocomotiveScroll({
+    el: document.querySelector('[data-scroll-container]'),
+    smooth: true,
+    smartphone: {
+      smooth: true
+    },
+    tablet: {
+      smooth: true
+    }
+  });
+
+  const header = document.querySelector('.sticky-header');
+
+  scroll.on('scroll', (args) => {
+    if (args.scroll.y > 10) {
       header.classList.add('shrink');
     } else {
       header.classList.remove('shrink');
     }
   });
+});
     </script>
 </body>
           </html>

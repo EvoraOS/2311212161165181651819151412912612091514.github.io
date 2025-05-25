@@ -1,532 +1,614 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Wallpaper Categories</title>
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/locomotive-scroll/4.1.4/locomotive-scroll.min.css">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Customize Wallpaper</title>
   <style>
-    * {
-      margin: 0;
-      padding: 0;
-      box-sizing: border-box;
-      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
-    }
-    
+    * { box-sizing: border-box; margin: 0; padding: 0; }
     body {
-      background-color: #f5f5f5;
-      overflow-x: hidden;
-    }
-    
-    .container {
-      padding: 20px;
-      width: 100%;
-    }
-    
-    .header {
-      display: flex;
-      align-items: center;
-      margin-bottom: 40px;
-    }
-    
-    /* Sticky collapsing header */
-    
-.sticky-header {
-  position: sticky;
-  top: 0;
-  background: #f5f5f5;
-  z-index: 999;
-  padding: 20px 20px 10px;
-  transition: all 0.3s ease;
-}
-
-.sticky-header.shrink {
-  background: #ffffff;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
-}
-    
-.sticky-header.shrink .back-btn {
-  width: 32px;
-  height: 32px;
-  font-size: 20px;
-  background-color: #fff;
-  box-shadow: 0 2px 5px rgba(0,0,0,0.1);
-}
-    
-    .back-btn {
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      width: 40px;
-      height: 40px;
-      font-size: 24px;
-      font-weight: bold;
-      margin-right: 15px;
-      text-decoration: none;
-      color: #000;
-      cursor: pointer;
-      background-color: #fff;
-      border-radius: 50%;
-      box-shadow: 0 2px 5px rgba(0,0,0,0.1);
-    }
-    
-    .title {
-      font-size: 32px;
-      font-weight: bold;
-    }
-    
-    .category-section {
-      margin-bottom: 60px;
-    }
-    
-    .category-title {
-      font-size: 36px;
-      font-weight: bold;
-      margin-bottom: 20px;
-    }
-    
-    .wallpapers-container {
-      display: flex;
-      overflow-x: auto;
-      gap: 15px;
-      padding: 10px 0;
-      -ms-overflow-style: none;
-      scrollbar-width: none;
-    }
-    
-    .wallpapers-container::-webkit-scrollbar {
-      display: none;
-    }
-    
-    .wallpaper-card {
-      position: relative;
-      min-width: 160px;
-      height: 320px;
-      border-radius: 14px;
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Arial, sans-serif;
+      height: 100vh;
       overflow: hidden;
-      box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+      background-color: rgba(50, 50, 50, 0.5);
     }
     
-    .wallpaper-img {
+    /* Top navigation bar */
+    .top-nav {
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      display: flex;
+      justify-content: space-between;
+      padding: 16px;
+      z-index: 10;
+    }
+    
+    .nav-button {
+      background: none;
+      border: none;
+      color: white;
+      font-size: 18px;
+      font-weight: 500;
+      padding: 8px 24px;
+      border-radius: 999px;
+      cursor: pointer;
+      text-decoration: none; /* Remove underline */
+    }
+    
+    #cancel-btn {
+      background: rgba(255, 255, 255, 0.8);
+      color: #000;
+    }
+    
+    #save-btn {
+      background: #000;
+    }
+    
+    /* Background blur container */
+    .blur-container {
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      overflow: hidden;
+      width: 100vw;
+      height: 100vh;
+      z-index: -1;
+    }
+    
+    .blur-bg {
+      position: absolute;
+      top: -50px;
+      left: -50px;
+      right: -50px;
+      bottom: -50px;
+      background-position: center;
+      background-size: cover;
+      filter: blur(25px);
+      opacity: 0.9;
+      width: calc(100% + 100px);
+      height: calc(100% + 100px);
+    }
+    
+    /* Wallpaper container */
+    .wallpaper-container {
+      position: fixed;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      width: min(70%, 360px); /* Use the smaller of 70% or 360px */
+      height: min(75%, 720px); /* Use the smaller of 75% or 720px */
+      border-radius: 20px;
+      overflow: hidden;
+      box-shadow: 0 4px 30px rgba(0, 0, 0, 0.3);
+      aspect-ratio: 9/19; /* Smartphone aspect ratio */
+    }
+    
+    .wallpaper {
       width: 100%;
       height: 100%;
       object-fit: cover;
-      transition: transform 0.3s ease;
+      border-radius: 20px;
     }
     
-    .wallpaper-card:hover .wallpaper-img {
-      transform: scale(1.05);
-    }
-    
-    .overlay {
+    /* Text overlay draggable */
+    .text-overlay {
       position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      color: white;
+      text-align: center;
+      text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
+      width: 80%;
+      cursor: move;
+      user-select: none;
+      display: none; /* Hide text by default */
+    }
+    
+    #main-text {
+      font-size: 64px;
+      font-weight: 800;
+      letter-spacing: 2px;
+    }
+    
+    .text-subtitle {
+      margin-top: 20px;
+      font-size: 24px;
+      font-weight: 600;
+    }
+    
+    /* Bottom toolbar - MODIFIED */
+    .bottom-toolbar {
+      position: fixed;
       bottom: 0;
       left: 0;
       right: 0;
-      padding: 15px;
-      background: linear-gradient(transparent, rgba(0,0,0,0.7));
       display: flex;
       justify-content: center;
+      padding: 16px;
+      z-index: 10;
     }
     
-    .download-btn {
-      background: #000;
-      color: #fff;
-      padding: 8px 20px;
-      border-radius: 999px;
-      font-size: 14px;
-      font-weight: 500;
-      cursor: pointer;
-      border: none;
+    .tool-button {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      color: white;
       text-decoration: none;
-      display: inline-block;
-      margin-top: 15px;
+      width: 70px;
+      margin: 0 15px; /* Reduced spacing between buttons */
+    }
+    
+    .tool-icon {
+      width: 50px;
+      height: 50px;
+      background-color: rgba(100, 100, 100, 0.5);
+      border-radius: 50%;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      margin-bottom: 8px;
+      backdrop-filter: blur(8px);
+    }
+    
+    /* Active state for tool buttons */
+    .tool-button.active .tool-icon {
+      background-color: #000;
+    }
+    
+    .tool-button.active .tool-text {
+      font-weight: bold;
+    }
+    
+    .tool-text {
+      font-size: 14px;
       text-align: center;
     }
     
-    .download-btn:hover {
-      background: #333;
+    /* Text edit popup */
+    .popup-container {
+      display: none;
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background-color: rgba(0, 0, 0, 0.4);
+      z-index: 20;
+      align-items: flex-end;
+      justify-content: center;
     }
-
-    .main-action-btn {
-      display: block;
+    
+    .text-editor {
+      background: white;
+      padding: 20px;
+      border-radius: 30px 30px 0 0;
       width: 100%;
-      max-width: 300px;
-      margin: 40px auto;
-      background: #000;
-      color: #fff;
-      padding: 15px 20px;
+      max-height: 80vh;
+    }
+    
+    .text-editor textarea {
+      width: 100%;
+      padding: 15px;
+      border: 1px solid #eee;
+      border-radius: 15px;
+      font-size: 16px;
+      background-color: #f8f8f8;
+      color: #666;
+    }
+    
+    .button-row {
+      display: flex;
+      justify-content: space-between;
+      margin-bottom: 20px;
+    }
+    
+    .popup-btn {
+      padding: 12px 25px;
+      border: none;
       border-radius: 999px;
       font-size: 16px;
       font-weight: 500;
       cursor: pointer;
-      border: none;
-      text-decoration: none;
-      text-align: center;
+    }
+    
+    .cancel-popup {
+      background: #e6e6e6;
+      color: #000;
+    }
+    
+    .apply-text {
+      background: #000;
+      color: white;
+      padding: 12px 30px;
     }
 
-    .main-action-btn:hover {
-      background: #333;
+    /* Fix for fullscreen display */
+    @media screen and (min-width: 1024px) {
+      .wallpaper-container {
+        width: 400px;
+        height: auto; /* Let aspect ratio control height */
+        aspect-ratio: 9/19;
+      }
+      
+      .tool-icon {
+        width: 60px;
+        height: 60px;
+      }
+      
+      .tool-text {
+        font-size: 16px;
+      }
+      
+      #main-text {
+        font-size: 72px;
+      }
+      
+      .text-subtitle {
+        font-size: 28px;
+      }
     }
-
-    /* Smooth scrolling with Locomotive Scroll */
-    html.has-scroll-smooth {
-      overflow: hidden;
-    }
-
-    html.has-scroll-dragging {
-      user-select: none;
-    }
-
-    .has-scroll-smooth body {
-      overflow: hidden;
-    }
-
-    .has-scroll-smooth [data-scroll-container] {
-      min-height: 100vh;
+    
+    /* Fix for very small screens */
+    @media screen and (max-height: 600px) {
+      .wallpaper-container {
+        height: 70%;
+      }
+      
+      .bottom-toolbar {
+        padding: 8px 16px;
+      }
     }
   </style>
 </head>
 <body>
-  <div data-scroll-container class="container">
-    <div class="header sticky-header" data-scroll data-scroll-speed="1">
-      <a href="javascript:history.back()" class="back-btn">&lt;</a>
-      <h1 class="title">Categories</h1>
-    </div>
-    
-    <!-- Nature Category -->
-    <section class="category-section" data-scroll data-scroll-speed="1">
-      <h2 class="category-title">Nature</h2>
-      <div class="wallpapers-container">
-        <div class="wallpaper-card">
-          <img src="https://source.unsplash.com/random/160x320/?forest" alt="Forest landscape" class="wallpaper-img">
-          <div class="overlay">
-            <a href="#" class="download-btn" onclick="downloadWallpaper('nature1')">Download</a>
-          </div>
-        </div>
-        <div class="wallpaper-card">
-          <img src="https://source.unsplash.com/random/160x320/?mountain" alt="Mountain view" class="wallpaper-img">
-          <div class="overlay">
-            <a href="#" class="download-btn" onclick="downloadWallpaper('nature2')">Download</a>
-          </div>
-        </div>
-        <div class="wallpaper-card">
-          <img src="https://source.unsplash.com/random/160x320/?ocean" alt="Ocean sunset" class="wallpaper-img">
-          <div class="overlay">
-            <a href="#" class="download-btn" onclick="downloadWallpaper('nature3')">Download</a>
-          </div>
-        </div>
-        <div class="wallpaper-card">
-          <img src="https://source.unsplash.com/random/160x320/?waterfall" alt="Waterfall" class="wallpaper-img">
-          <div class="overlay">
-            <a href="#" class="download-btn" onclick="downloadWallpaper('nature4')">Download</a>
-          </div>
-        </div>
-        <div class="wallpaper-card">
-          <img src="https://source.unsplash.com/random/160x320/?green" alt="Lush green forest" class="wallpaper-img">
-          <div class="overlay">
-            <a href="#" class="download-btn" onclick="downloadWallpaper('nature5')">Download</a>
-          </div>
-        </div>
-      </div>
-    </section>
-    
-    <!-- Buildings Category -->
-    <section class="category-section" data-scroll data-scroll-speed="1">
-      <h2 class="category-title">Buildings</h2>
-      <div class="wallpapers-container">
-        <div class="wallpaper-card">
-          <img src="https://source.unsplash.com/random/160x320/?skyscraper" alt="Modern skyscraper" class="wallpaper-img">
-          <div class="overlay">
-            <a href="#" class="download-btn" onclick="downloadWallpaper('building1')">Download</a>
-          </div>
-        </div>
-        <div class="wallpaper-card">
-          <img src="https://source.unsplash.com/random/160x320/?architecture" alt="Historic architecture" class="wallpaper-img">
-          <div class="overlay">
-            <a href="#" class="download-btn" onclick="downloadWallpaper('building2')">Download</a>
-          </div>
-        </div>
-        <div class="wallpaper-card">
-          <img src="https://source.unsplash.com/random/160x320/?skyline" alt="City skyline" class="wallpaper-img">
-          <div class="overlay">
-            <a href="#" class="download-btn" onclick="downloadWallpaper('building3')">Download</a>
-          </div>
-        </div>
-        <div class="wallpaper-card">
-          <img src="https://source.unsplash.com/random/160x320/?bridge" alt="Bridge structure" class="wallpaper-img">
-          <div class="overlay">
-            <a href="#" class="download-btn" onclick="downloadWallpaper('building4')">Download</a>
-          </div>
-        </div>
-        <div class="wallpaper-card">
-          <img src="https://source.unsplash.com/random/160x320/?urban" alt="Urban landscape" class="wallpaper-img">
-          <div class="overlay">
-            <a href="#" class="download-btn" onclick="downloadWallpaper('building5')">Download</a>
-          </div>
-        </div>
-      </div>
-    </section>
-    
-    <!-- Abstract Category -->
-    <section class="category-section" data-scroll data-scroll-speed="1">
-      <h2 class="category-title">Abstract</h2>
-      <div class="wallpapers-container">
-        <div class="wallpaper-card">
-          <img src="https://source.unsplash.com/random/160x320/?abstract" alt="Colorful abstract" class="wallpaper-img">
-          <div class="overlay">
-            <a href="#" class="download-btn" onclick="downloadWallpaper('abstract1')">Download</a>
-          </div>
-        </div>
-        <div class="wallpaper-card">
-          <img src="https://source.unsplash.com/random/160x320/?geometric" alt="Geometric patterns" class="wallpaper-img">
-          <div class="overlay">
-            <a href="#" class="download-btn" onclick="downloadWallpaper('abstract2')">Download</a>
-          </div>
-        </div>
-        <div class="wallpaper-card">
-          <img src="https://source.unsplash.com/random/160x320/?fluid" alt="Fluid shapes" class="wallpaper-img">
-          <div class="overlay">
-            <a href="#" class="download-btn" onclick="downloadWallpaper('abstract3')">Download</a>
-          </div>
-        </div>
-        <div class="wallpaper-card">
-          <img src="https://source.unsplash.com/random/160x320/?digital" alt="Digital art" class="wallpaper-img">
-          <div class="overlay">
-            <a href="#" class="download-btn" onclick="downloadWallpaper('abstract4')">Download</a>
-          </div>
-        </div>
-        <div class="wallpaper-card">
-          <img src="https://source.unsplash.com/random/160x320/?minimal,art" alt="Minimalist abstract" class="wallpaper-img">
-          <div class="overlay">
-            <a href="#" class="download-btn" onclick="downloadWallpaper('abstract5')">Download</a>
-          </div>
-        </div>
-      </div>
-    </section>
-    
-    <!-- Minimalist Category -->
-    <section class="category-section" data-scroll data-scroll-speed="1">
-      <h2 class="category-title">Minimalist</h2>
-      <div class="wallpapers-container">
-        <div class="wallpaper-card">
-          <img src="https://source.unsplash.com/random/160x320/?lines" alt="Simple lines" class="wallpaper-img">
-          <div class="overlay">
-            <a href="#" class="download-btn" onclick="downloadWallpaper('minimal1')">Download</a>
-          </div>
-        </div>
-        <div class="wallpaper-card">
-          <img src="https://source.unsplash.com/random/160x320/?zen" alt="Zen minimal" class="wallpaper-img">
-          <div class="overlay">
-            <a href="#" class="download-btn" onclick="downloadWallpaper('minimal2')">Download</a>
-          </div>
-        </div>
-        <div class="wallpaper-card">
-          <img src="https://source.unsplash.com/random/160x320/?colorblock" alt="Color blocks" class="wallpaper-img">
-          <div class="overlay">
-            <a href="#" class="download-btn" onclick="downloadWallpaper('minimal3')">Download</a>
-          </div>
-        </div>
-        <div class="wallpaper-card">
-          <img src="https://source.unsplash.com/random/160x320/?gradient" alt="Gradient minimal" class="wallpaper-img">
-          <div class="overlay">
-            <a href="#" class="download-btn" onclick="downloadWallpaper('minimal4')">Download</a>
-          </div>
-        </div>
-        <div class="wallpaper-card">
-          <img src="https://source.unsplash.com/random/160x320/?blackandwhite" alt="Black and white" class="wallpaper-img">
-          <div class="overlay">
-            <a href="#" class="download-btn" onclick="downloadWallpaper('minimal5')">Download</a>
-          </div>
-        </div>
-      </div>
-    </section>
-    
-    <!-- Dark Category -->
-    <section class="category-section" data-scroll data-scroll-speed="1">
-      <h2 class="category-title">Dark</h2>
-      <div class="wallpapers-container">
-        <div class="wallpaper-card">
-          <img src="https://source.unsplash.com/random/160x320/?night" alt="Night sky" class="wallpaper-img">
-          <div class="overlay">
-            <a href="#" class="download-btn" onclick="downloadWallpaper('dark1')">Download</a>
-          </div>
-        </div>
-        <div class="wallpaper-card">
-          <img src="https://source.unsplash.com/random/160x320/?dark,pattern" alt="Dark patterns" class="wallpaper-img">
-          <div class="overlay">
-            <a href="#" class="download-btn" onclick="downloadWallpaper('dark2')">Download</a>
-          </div>
-        </div>
-        <div class="wallpaper-card">
-          <img src="https://source.unsplash.com/random/160x320/?dark,abstract" alt="Dark abstract" class="wallpaper-img">
-          <div class="overlay">
-            <a href="#" class="download-btn" onclick="downloadWallpaper('dark3')">Download</a>
-          </div>
-        </div>
-        <div class="wallpaper-card">
-          <img src="https://source.unsplash.com/random/160x320/?dark,city" alt="Dark city" class="wallpaper-img">
-          <div class="overlay">
-            <a href="#" class="download-btn" onclick="downloadWallpaper('dark4')">Download</a>
-          </div>
-        </div>
-        <div class="wallpaper-card">
-          <img src="https://source.unsplash.com/random/160x320/?dark,nature" alt="Dark nature" class="wallpaper-img">
-          <div class="overlay">
-            <a href="#" class="download-btn" onclick="downloadWallpaper('dark5')">Download</a>
-          </div>
-        </div>
-      </div>
-    </section>
-    
-    <!-- Space Category -->
-    <section class="category-section" data-scroll data-scroll-speed="1">
-      <h2 class="category-title">Space</h2>
-      <div class="wallpapers-container">
-        <div class="wallpaper-card">
-          <img src="https://source.unsplash.com/random/160x320/?galaxy" alt="Galaxy" class="wallpaper-img">
-          <div class="overlay">
-            <a href="#" class="download-btn" onclick="downloadWallpaper('space1')">Download</a>
-          </div>
-        </div>
-        <div class="wallpaper-card">
-          <img src="https://source.unsplash.com/random/160x320/?nebula" alt="Nebula" class="wallpaper-img">
-          <div class="overlay">
-            <a href="#" class="download-btn" onclick="downloadWallpaper('space2')">Download</a>
-          </div>
-        </div>
-        <div class="wallpaper-card">
-          <img src="https://source.unsplash.com/random/160x320/?stars" alt="Stars" class="wallpaper-img">
-          <div class="overlay">
-            <a href="#" class="download-btn" onclick="downloadWallpaper('space3')">Download</a>
-          </div>
-        </div>
-        <div class="wallpaper-card">
-          <img src="https://source.unsplash.com/random/160x320/?planet" alt="Planet" class="wallpaper-img">
-          <div class="overlay">
-            <a href="#" class="download-btn" onclick="downloadWallpaper('space4')">Download</a>
-          </div>
-        </div>
-        <div class="wallpaper-card">
-          <img src="https://source.unsplash.com/random/160x320/?cosmos" alt="Space abstract" class="wallpaper-img">
-          <div class="overlay">
-            <a href="#" class="download-btn" onclick="downloadWallpaper('space5')">Download</a>
-          </div>
-        </div>
-      </div>
-    </section>
-    
-    <!-- Anime Category -->
-    <section class="category-section" data-scroll data-scroll-speed="1">
-      <h2 class="category-title">Anime</h2>
-      <div class="wallpapers-container">
-        <div class="wallpaper-card">
-          <img src="https://source.unsplash.com/random/160x320/?illustration" alt="Anime character" class="wallpaper-img">
-          <div class="overlay">
-            <a href="#" class="download-btn" onclick="downloadWallpaper('anime1')">Download</a>
-          </div>
-        </div>
-        <div class="wallpaper-card">
-          <img src="https://source.unsplash.com/random/160x320/?japan,landscape" alt="Anime landscape" class="wallpaper-img">
-          <div class="overlay">
-            <a href="#" class="download-btn" onclick="downloadWallpaper('anime2')">Download</a>
-          </div>
-        </div>
-        <div class="wallpaper-card">
-          <img src="https://source.unsplash.com/random/160x320/?illustration,digital" alt="Anime art" class="wallpaper-img">
-          <div class="overlay">
-            <a href="#" class="download-btn" onclick="downloadWallpaper('anime3')">Download</a>
-          </div>
-        </div>
-        <div class="wallpaper-card">
-          <img src="https://source.unsplash.com/random/160x320/?cartoon" alt="Anime scenes" class="wallpaper-img">
-          <div class="overlay">
-            <a href="#" class="download-btn" onclick="downloadWallpaper('anime4')">Download</a>
-          </div>
-        </div>
-        <div class="wallpaper-card">
-          <img src="https://source.unsplash.com/random/160x320/?minimal,illustration" alt="Anime minimal" class="wallpaper-img">
-          <div class="overlay">
-            <a href="#" class="download-btn" onclick="downloadWallpaper('anime5')">Download</a>
-          </div>
-        </div>
-      </div>
-    </section>
-    
-    <!-- Main Action Button -->
-    <a href="wallpaper.html" class="main-action-btn">View All Wallpapers</a>
+  <!-- Top navigation -->
+  <div class="top-nav">
+    <a href="2.html" class="nav-button" id="cancel-btn">Cancel</a>
+    <button class="nav-button" id="save-btn">Save</button>
   </div>
-
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/locomotive-scroll/4.1.4/locomotive-scroll.min.js"></script>
+  
+  <!-- Background blur -->
+  <div class="blur-container">
+    <div class="blur-bg" id="blur-background"></div>
+  </div>
+  
+  <!-- Wallpaper container -->
+  <div class="wallpaper-container">
+    <img src="" id="selected-wallpaper" class="wallpaper" alt="Selected Wallpaper">
+    <div class="text-overlay" id="text-content">
+      <div id="main-text"></div>
+      <div class="text-subtitle" id="subtitle-text"></div>
+    </div>
+  </div>
+  
+  <!-- Bottom toolbar -->
+  <div class="bottom-toolbar">
+    <a href="#" class="tool-button" id="text-btn">
+      <div class="tool-icon">
+        <span style="font-size: 24px; font-weight: bold; color: white;">Tt</span>
+      </div>
+      <span class="tool-text">Add Text</span>
+    </a>
+    
+    <a href="#" class="tool-button" id="size-btn">
+      <div class="tool-icon">
+        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <rect x="3" y="3" width="18" height="18" rx="2" ry="2"></rect>
+        </svg>
+      </div>
+      <span class="tool-text">Size</span>
+    </a>
+    
+    <a href="#" class="tool-button" id="stickers-btn">
+      <div class="tool-icon">
+        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"></polygon>
+        </svg>
+      </div>
+      <span class="tool-text">Stickers</span>
+    </a>
+  </div>
+  
+  <!-- Text Edit Popup -->
+  <div class="popup-container" id="text-popup">
+    <div class="text-editor">
+      <div class="button-row" style="margin-bottom: 20px;">
+        <button class="popup-btn cancel-popup" id="cancel-text-btn">Cancel</button>
+        <button class="popup-btn apply-text" id="apply-text-btn">Add Text</button>
+      </div>
+      <textarea id="text-input" placeholder="Enter your text here..." rows="10" style="resize: none;"></textarea>
+    </div>
+  </div>
+  
   <script>
+    // Function to get URL parameters
+    function getUrlParameter(name) {
+      name = name.replace(/[\[]/, '\\[').replace(/[\]]/, '\\]');
+      var regex = new RegExp('[\\?&]' + name + '=([^&#]*)');
+      var results = regex.exec(location.search);
+      return results === null ? '' : decodeURIComponent(results[1].replace(/\+/g, ' '));
+    }
+    
+    // Drag functionality
+    function makeDraggable(element) {
+      let isDragging = false;
+      let offsetX, offsetY;
+      
+      element.addEventListener('mousedown', startDrag);
+      element.addEventListener('touchstart', startDragTouch, { passive: false });
+      
+      function startDrag(e) {
+        isDragging = true;
+        offsetX = e.clientX - element.getBoundingClientRect().left;
+        offsetY = e.clientY - element.getBoundingClientRect().top;
+        
+        document.addEventListener('mousemove', drag);
+        document.addEventListener('mouseup', stopDrag);
+      }
+      
+      function startDragTouch(e) {
+        isDragging = true;
+        offsetX = e.touches[0].clientX - element.getBoundingClientRect().left;
+        offsetY = e.touches[0].clientY - element.getBoundingClientRect().top;
+        
+        document.addEventListener('touchmove', dragTouch, { passive: false });
+        document.addEventListener('touchend', stopDragTouch);
+        
+        e.preventDefault();
+      }
+      
+      function drag(e) {
+        if (!isDragging) return;
+        
+        const container = document.querySelector('.wallpaper-container');
+        const containerRect = container.getBoundingClientRect();
+        
+        let left = e.clientX - containerRect.left - offsetX;
+        let top = e.clientY - containerRect.top - offsetY;
+        
+        // Keep within container bounds
+        const elementRect = element.getBoundingClientRect();
+        left = Math.max(-elementRect.width/2, Math.min(left, containerRect.width - elementRect.width/2));
+        top = Math.max(-elementRect.height/2, Math.min(top, containerRect.height - elementRect.height/2));
+        
+        element.style.transform = `translate(${left}px, ${top}px)`;
+      }
+      
+      function dragTouch(e) {
+        if (!isDragging) return;
+        
+        const container = document.querySelector('.wallpaper-container');
+        const containerRect = container.getBoundingClientRect();
+        
+        let left = e.touches[0].clientX - containerRect.left - offsetX;
+        let top = e.touches[0].clientY - containerRect.top - offsetY;
+        
+        // Keep within container bounds
+        const elementRect = element.getBoundingClientRect();
+        left = Math.max(-elementRect.width/2, Math.min(left, containerRect.width - elementRect.width/2));
+        top = Math.max(-elementRect.height/2, Math.min(top, containerRect.height - elementRect.height/2));
+        
+        element.style.transform = `translate(${left}px, ${top}px)`;
+        e.preventDefault();
+      }
+      
+      function stopDrag() {
+        isDragging = false;
+        document.removeEventListener('mousemove', drag);
+        document.removeEventListener('mouseup', stopDrag);
+      }
+      
+      function stopDragTouch() {
+        isDragging = false;
+        document.removeEventListener('touchmove', dragTouch);
+        document.removeEventListener('touchend', stopDragTouch);
+      }
+    }
+    
+    // Set the wallpaper based on URL parameter
     document.addEventListener('DOMContentLoaded', function() {
-      // Initialize Locomotive Scroll
-      const scroll = new LocomotiveScroll({
-        el: document.querySelector('[data-scroll-container]'),
-        smooth: true,
-        smartphone: {
-          smooth: true
-        },
-        tablet: {
-          smooth: true
+      // Get the wallpaper from URL parameter or use default
+      var wallpaper = getUrlParameter('wallpaper') || 'wall1.jpg';
+      
+      // Set the wallpaper and background
+      document.getElementById('selected-wallpaper').src = wallpaper;
+      document.getElementById('blur-background').style.backgroundImage = 'url(' + wallpaper + ')';
+      
+      // Hide text overlay by default until user adds text
+      document.getElementById('text-content').style.display = 'none';
+      
+      // Make text overlay draggable
+      makeDraggable(document.getElementById('text-content'));
+      
+      // Initialize text editor with empty values
+      document.getElementById('text-input').value = '';
+      
+      // Initialize tool buttons
+      document.getElementById('text-btn').addEventListener('click', function(e) {
+        e.preventDefault();
+        // Add active class to text button
+        resetActiveButtons();
+        this.classList.add('active');
+        showTextEditor();
+      });
+      
+      document.getElementById('size-btn').addEventListener('click', function(e) {
+        e.preventDefault();
+        // Add active class to size button
+        resetActiveButtons();
+        this.classList.add('active');
+        // Size functionality will be added later
+        alert('Size adjustment feature coming soon!');
+      });
+      
+      document.getElementById('stickers-btn').addEventListener('click', function(e) {
+        e.preventDefault();
+        // Add active class to stickers button
+        resetActiveButtons();
+        this.classList.add('active');
+        // Stickers functionality will be added later
+        alert('Stickers feature coming soon!');
+      });
+      
+      // Function to reset all active buttons
+      function resetActiveButtons() {
+        document.querySelectorAll('.tool-button').forEach(button => {
+          button.classList.remove('active');
+        });
+      }
+      
+      // Text editor popup
+      document.getElementById('cancel-text-btn').addEventListener('click', function() {
+        hideTextEditor();
+      });
+      
+      document.getElementById('apply-text-btn').addEventListener('click', function() {
+        applyTextChanges();
+        hideTextEditor();
+      });
+      
+      // Save button functionality
+      document.getElementById('save-btn').addEventListener('click', function() {
+        // Create a canvas to combine the wallpaper and text
+        var canvas = document.createElement('canvas');
+        var wallpaperImg = document.getElementById('selected-wallpaper');
+        
+        // Wait for image to load
+        if (wallpaperImg.complete) {
+          downloadWallpaper(wallpaperImg);
+        } else {
+          wallpaperImg.onload = function() {
+            downloadWallpaper(wallpaperImg);
+          };
         }
       });
-
-      // Force locomotive scroll to recalculate sizes on window resize
-      window.addEventListener('resize', () => {
-        scroll.update();
-      });
     });
-
-    // Function to download wallpaper
-    function downloadWallpaper(id) {
-      // Get the image source from the clicked wallpaper card
-      const card = event.target.closest('.wallpaper-card');
-      const img = card.querySelector('.wallpaper-img');
-      const imgSrc = img.src;
+    
+    // Show text editor popup
+    function showTextEditor() {
+      document.getElementById('text-popup').style.display = 'flex';
       
-      // Create a temporary anchor element to trigger download
-      const link = document.createElement('a');
-      link.href = imgSrc;
-      link.download = `wallpaper-${id}.jpg`;
+      // Update input field with current text
+      const mainText = document.getElementById('main-text').innerText;
+      const subtitleText = document.getElementById('subtitle-text').innerHTML.replace(/<br>/g, '\n');
       
-      // Append to the document and trigger click
-      document.body.appendChild(link);
-      link.click();
+      if (subtitleText.trim()) {
+        document.getElementById('text-input').value = mainText + '\n' + subtitleText;
+      } else {
+        document.getElementById('text-input').value = mainText;
+      }
       
-      // Clean up
-      document.body.removeChild(link);
-      
-      // Prevent default link behavior
-      event.preventDefault();
+      // Focus on the text input
+      setTimeout(() => {
+        document.getElementById('text-input').focus();
+      }, 300);
     }
     
-document.addEventListener('DOMContentLoaded', function() {
-  const scroll = new LocomotiveScroll({
-    el: document.querySelector('[data-scroll-container]'),
-    smooth: true,
-    smartphone: {
-      smooth: true
-    },
-    tablet: {
-      smooth: true
+    // Hide text editor popup
+    function hideTextEditor() {
+      document.getElementById('text-popup').style.display = 'none';
+      // If no text was added, remove active state from text button
+      if (document.getElementById('text-content').style.display === 'none') {
+        document.getElementById('text-btn').classList.remove('active');
+      }
     }
-  });
-
-  // Title shrink using Locomotive scroll event
-  const header = document.querySelector('.header');
-  scroll.on('scroll', (args) => {
-    if (args.scroll.y > 10) {
-      header.classList.add('shrink');
-    } else {
-      header.classList.remove('shrink');
+    
+    // Apply text changes
+    function applyTextChanges() {
+      const text = document.getElementById('text-input').value;
+      
+      if (text.trim() === '') {
+        // If no text entered, hide the text overlay
+        document.getElementById('text-content').style.display = 'none';
+        return;
+      }
+      
+      // Show text overlay
+      document.getElementById('text-content').style.display = 'block';
+      
+      // If there's a line break, split into main text and subtitle
+      if (text.includes('\n')) {
+        const lines = text.split('\n');
+        const mainText = lines[0];
+        const subtitleText = lines.slice(1).join('\n');
+        
+        document.getElementById('main-text').innerText = mainText;
+        document.getElementById('subtitle-text').innerHTML = subtitleText.replace(/\n/g, '<br>');
+      } else {
+        // Only main text
+        document.getElementById('main-text').innerText = text;
+        document.getElementById('subtitle-text').innerHTML = '';
+      }
+      
+      // Reset position after text change
+      document.getElementById('text-content').style.transform = 'translate(-50%, -50%)';
     }
-  });
-
-  window.addEventListener('resize', () => {
-    scroll.update();
-  });
-});
-    </script>
+    
+    // Function to download the edited wallpaper
+    function downloadWallpaper(img) {
+      // Create canvas
+      var canvas = document.createElement('canvas');
+      canvas.width = img.naturalWidth;
+      canvas.height = img.naturalHeight;
+      
+      // Draw image on canvas
+      var ctx = canvas.getContext('2d');
+      ctx.drawImage(img, 0, 0);
+      
+      // If text is visible, draw it on canvas
+      var textContent = document.getElementById('text-content');
+      if (textContent.style.display !== 'none') {
+        // Calculate position
+        const container = document.querySelector('.wallpaper-container');
+        const containerRect = container.getBoundingClientRect();
+        const textRect = textContent.getBoundingClientRect();
+        
+        // Get transform matrix values
+        const style = window.getComputedStyle(textContent);
+        const matrix = new DOMMatrixReadOnly(style.transform);
+        
+        // Calculate position in percentage
+        const leftPercent = (matrix.m41 + containerRect.width/2) / containerRect.width;
+        const topPercent = (matrix.m42 + containerRect.height/2) / containerRect.height;
+        
+        // Set text styles
+        ctx.textAlign = 'center';
+        ctx.textBaseline = 'middle';
+        ctx.fillStyle = 'white';
+        ctx.shadowColor = 'rgba(0, 0, 0, 0.5)';
+        ctx.shadowBlur = 10;
+        ctx.shadowOffsetX = 2;
+        ctx.shadowOffsetY = 2;
+        
+        // Calculate positions on canvas
+        const x = canvas.width * leftPercent;
+        const y = canvas.height * topPercent;
+        
+        // Draw main text
+        const mainText = document.getElementById('main-text').innerText;
+        ctx.font = 'bold 72px Arial';
+        ctx.fillText(mainText, x, y - 40);
+        
+        // Draw subtitle
+        const subtitleLines = document.getElementById('subtitle-text').innerHTML.split('<br>');
+        ctx.font = 'bold 36px Arial';
+        
+        for (let i = 0; i < subtitleLines.length; i++) {
+          ctx.fillText(subtitleLines[i], x, y + 30 + i * 50);
+        }
+      }
+      
+      // Create download link
+      var link = document.createElement('a');
+      link.download = 'customized-wallpaper.jpg';
+      link.href = canvas.toDataURL('image/jpeg', 0.9);
+      link.click();
+    }
+  </script>
 </body>
-          </html>
+      </html>

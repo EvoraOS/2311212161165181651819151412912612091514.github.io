@@ -1,0 +1,530 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Wallpaper Categories</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/locomotive-scroll/4.1.4/locomotive-scroll.min.css">
+  <style>
+    :root {
+      --header-height-large: 120px;
+      --header-height-small: 56px;
+    }
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+    }
+    
+    body {
+      background-color: #f5f5f5;
+      overflow-x: hidden;
+    }
+    
+    header {
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      height: var(--header-height-large);
+      background: #f5f5f5;
+      display: flex;
+      flex-direction: column;
+      box-sizing: border-box;
+      transition: height 0.1s ease;
+      overflow: hidden;
+      z-index: 1000;
+    }
+    .top-row {
+      height: calc(var(--header-height-small) + 24px); /* Added extra height for spacing */
+      display: flex;
+      align-items: center;
+      justify-content: flex-start;
+      padding: 24px 16px 0; /* Added top padding for status bar space */
+      box-sizing: border-box;
+    }
+    .back-btn {
+      font-size: 1.5rem;
+      cursor: pointer;
+      text-decoration: none;
+      color: #000;
+      width: 24px;
+      height: 24px;
+      background-image: url("https://api.iconify.design/material-symbols:arrow-back-ios.svg?color=%23000000");
+      background-size: contain;
+      background-repeat: no-repeat;
+      background-position: center;
+      text-indent: -9999px;
+    }
+    .small-title {
+      font-size: 1.25rem;
+      margin-left: 16px;
+      opacity: 0;
+      transform: translateY(8px);
+      transition: transform 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94), 
+                  opacity 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+      font-weight: normal;
+    }
+    .title-row {
+      flex: 1;
+      display: flex;
+      align-items: flex-end;
+      padding: 0 56px 16px; /* Increased left padding for spacing from arrow */
+      box-sizing: border-box;
+    }
+    .large-title {
+      font-size: 2rem;
+      margin: 0;
+      font-weight: normal;
+      opacity: 1;
+      transform: translateY(0);
+      transition: transform 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94), 
+                  opacity 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+    }
+    header.scrolled {
+      height: calc(var(--header-height-small) + 24px); /* Adjusted for new spacing */
+    }
+    header.scrolled .large-title {
+      opacity: 0;
+      transform: translateY(-8px);
+    }
+    header.scrolled .small-title {
+      opacity: 1;
+      transform: translateY(0);
+    }
+    
+    .container {
+      padding: 20px;
+      width: 100%;
+      margin-top: calc(var(--header-height-large) + 24px); /* Adjusted for new header height */
+      padding-top: 40px;
+    }
+    
+    .category-section {
+      margin-bottom: 60px;
+    }
+    
+    .category-title {
+      font-size: 36px;
+      font-weight: bold;
+      margin-bottom: 20px;
+    }
+    
+    .wallpapers-container {
+      display: flex;
+      overflow-x: auto;
+      gap: 15px;
+      padding: 10px 0;
+      -ms-overflow-style: none;
+      scrollbar-width: none;
+    }
+    
+    .wallpapers-container::-webkit-scrollbar {
+      display: none;
+    }
+    
+    .wallpaper-card {
+      position: relative;
+      min-width: 160px;
+      height: 320px;
+      border-radius: 14px;
+      overflow: hidden;
+      box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+    }
+    
+    .wallpaper-img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      transition: transform 0.3s ease;
+    }
+    
+    .wallpaper-card:hover .wallpaper-img {
+      transform: scale(1.05);
+    }
+    
+    .overlay {
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      padding: 15px;
+      background: linear-gradient(transparent, rgba(0,0,0,0.7));
+      display: flex;
+      justify-content: center;
+    }
+    
+    .download-btn {
+      background: #000;
+      color: #fff;
+      padding: 8px 20px;
+      border-radius: 999px;
+      font-size: 14px;
+      font-weight: 500;
+      cursor: pointer;
+      border: none;
+      text-decoration: none;
+      display: inline-block;
+      margin-top: 15px;
+      text-align: center;
+    }
+    
+    .download-btn:hover {
+      background: #333;
+    }
+
+    /* Smooth scrolling with Locomotive Scroll */
+    html.has-scroll-smooth {
+      overflow: hidden;
+    }
+
+    html.has-scroll-dragging {
+      user-select: none;
+    }
+
+    .has-scroll-smooth body {
+      overflow: hidden;
+    }
+
+    .has-scroll-smooth [data-scroll-container] {
+      min-height: 100vh;
+    }
+  </style>
+</head>
+<body>
+  <header id="header">
+    <div class="top-row">
+      <div class="back-btn-circle">
+        <div class="back-btn"></div>
+      </div>
+      <div class="small-title">Categories</div>
+    </div>
+    <div class="title-row">
+      <h1 class="large-title">Categories</h1>
+    </div>
+  </header>
+  
+  <div data-scroll-container class="container">
+    <!-- Nature Category -->
+    <section class="category-section" data-scroll data-scroll-speed="1">
+      <h2 class="category-title">Nature</h2>
+      <div class="wallpapers-container">
+        <div class="wallpaper-card">
+          <img src="/api/placeholder/160/320" alt="Forest landscape" class="wallpaper-img">
+          <div class="overlay">
+            <a href="#" class="download-btn" onclick="downloadWallpaper('nature1')">Download</a>
+          </div>
+        </div>
+        <div class="wallpaper-card">
+          <img src="/api/placeholder/160/320" alt="Mountain view" class="wallpaper-img">
+          <div class="overlay">
+            <a href="#" class="download-btn" onclick="downloadWallpaper('nature2')">Download</a>
+          </div>
+        </div>
+        <div class="wallpaper-card">
+          <img src="/api/placeholder/160/320" alt="Ocean sunset" class="wallpaper-img">
+          <div class="overlay">
+            <a href="#" class="download-btn" onclick="downloadWallpaper('nature3')">Download</a>
+          </div>
+        </div>
+        <div class="wallpaper-card">
+          <img src="/api/placeholder/160/320" alt="Waterfall" class="wallpaper-img">
+          <div class="overlay">
+            <a href="#" class="download-btn" onclick="downloadWallpaper('nature4')">Download</a>
+          </div>
+        </div>
+        <div class="wallpaper-card">
+          <img src="/api/placeholder/160/320" alt="Lush green forest" class="wallpaper-img">
+          <div class="overlay">
+            <a href="#" class="download-btn" onclick="downloadWallpaper('nature5')">Download</a>
+          </div>
+        </div>
+      </div>
+    </section>
+    
+    <!-- Buildings Category -->
+    <section class="category-section" data-scroll data-scroll-speed="1">
+      <h2 class="category-title">Buildings</h2>
+      <div class="wallpapers-container">
+        <div class="wallpaper-card">
+          <img src="/api/placeholder/160/320" alt="Modern skyscraper" class="wallpaper-img">
+          <div class="overlay">
+            <a href="#" class="download-btn" onclick="downloadWallpaper('building1')">Download</a>
+          </div>
+        </div>
+        <div class="wallpaper-card">
+          <img src="/api/placeholder/160/320" alt="Historic architecture" class="wallpaper-img">
+          <div class="overlay">
+            <a href="#" class="download-btn" onclick="downloadWallpaper('building2')">Download</a>
+          </div>
+        </div>
+        <div class="wallpaper-card">
+          <img src="/api/placeholder/160/320" alt="City skyline" class="wallpaper-img">
+          <div class="overlay">
+            <a href="#" class="download-btn" onclick="downloadWallpaper('building3')">Download</a>
+          </div>
+        </div>
+        <div class="wallpaper-card">
+          <img src="/api/placeholder/160/320" alt="Bridge structure" class="wallpaper-img">
+          <div class="overlay">
+            <a href="#" class="download-btn" onclick="downloadWallpaper('building4')">Download</a>
+          </div>
+        </div>
+        <div class="wallpaper-card">
+          <img src="/api/placeholder/160/320" alt="Urban landscape" class="wallpaper-img">
+          <div class="overlay">
+            <a href="#" class="download-btn" onclick="downloadWallpaper('building5')">Download</a>
+          </div>
+        </div>
+      </div>
+    </section>
+    
+    <!-- Abstract Category -->
+    <section class="category-section" data-scroll data-scroll-speed="1">
+      <h2 class="category-title">Abstract</h2>
+      <div class="wallpapers-container">
+        <div class="wallpaper-card">
+          <img src="/api/placeholder/160/320" alt="Colorful abstract" class="wallpaper-img">
+          <div class="overlay">
+            <a href="#" class="download-btn" onclick="downloadWallpaper('abstract1')">Download</a>
+          </div>
+        </div>
+        <div class="wallpaper-card">
+          <img src="/api/placeholder/160/320" alt="Geometric patterns" class="wallpaper-img">
+          <div class="overlay">
+            <a href="#" class="download-btn" onclick="downloadWallpaper('abstract2')">Download</a>
+          </div>
+        </div>
+        <div class="wallpaper-card">
+          <img src="/api/placeholder/160/320" alt="Fluid shapes" class="wallpaper-img">
+          <div class="overlay">
+            <a href="#" class="download-btn" onclick="downloadWallpaper('abstract3')">Download</a>
+          </div>
+        </div>
+        <div class="wallpaper-card">
+          <img src="/api/placeholder/160/320" alt="Digital art" class="wallpaper-img">
+          <div class="overlay">
+            <a href="#" class="download-btn" onclick="downloadWallpaper('abstract4')">Download</a>
+          </div>
+        </div>
+        <div class="wallpaper-card">
+          <img src="/api/placeholder/160/320" alt="Minimalist abstract" class="wallpaper-img">
+          <div class="overlay">
+            <a href="#" class="download-btn" onclick="downloadWallpaper('abstract5')">Download</a>
+          </div>
+        </div>
+      </div>
+    </section>
+    
+    <!-- Minimalist Category -->
+    <section class="category-section" data-scroll data-scroll-speed="1">
+      <h2 class="category-title">Minimalist</h2>
+      <div class="wallpapers-container">
+        <div class="wallpaper-card">
+          <img src="/api/placeholder/160/320" alt="Simple lines" class="wallpaper-img">
+          <div class="overlay">
+            <a href="#" class="download-btn" onclick="downloadWallpaper('minimal1')">Download</a>
+          </div>
+        </div>
+        <div class="wallpaper-card">
+          <img src="/api/placeholder/160/320" alt="Zen minimal" class="wallpaper-img">
+          <div class="overlay">
+            <a href="#" class="download-btn" onclick="downloadWallpaper('minimal2')">Download</a>
+          </div>
+        </div>
+        <div class="wallpaper-card">
+          <img src="/api/placeholder/160/320" alt="Color blocks" class="wallpaper-img">
+          <div class="overlay">
+            <a href="#" class="download-btn" onclick="downloadWallpaper('minimal3')">Download</a>
+          </div>
+        </div>
+        <div class="wallpaper-card">
+          <img src="/api/placeholder/160/320" alt="Gradient minimal" class="wallpaper-img">
+          <div class="overlay">
+            <a href="#" class="download-btn" onclick="downloadWallpaper('minimal4')">Download</a>
+          </div>
+        </div>
+        <div class="wallpaper-card">
+          <img src="/api/placeholder/160/320" alt="Black and white" class="wallpaper-img">
+          <div class="overlay">
+            <a href="#" class="download-btn" onclick="downloadWallpaper('minimal5')">Download</a>
+          </div>
+        </div>
+      </div>
+    </section>
+    
+    <!-- Dark Category -->
+    <section class="category-section" data-scroll data-scroll-speed="1">
+      <h2 class="category-title">Dark</h2>
+      <div class="wallpapers-container">
+        <div class="wallpaper-card">
+          <img src="/api/placeholder/160/320" alt="Night sky" class="wallpaper-img">
+          <div class="overlay">
+            <a href="#" class="download-btn" onclick="downloadWallpaper('dark1')">Download</a>
+          </div>
+        </div>
+        <div class="wallpaper-card">
+          <img src="/api/placeholder/160/320" alt="Dark patterns" class="wallpaper-img">
+          <div class="overlay">
+            <a href="#" class="download-btn" onclick="downloadWallpaper('dark2')">Download</a>
+          </div>
+        </div>
+        <div class="wallpaper-card">
+          <img src="/api/placeholder/160/320" alt="Dark abstract" class="wallpaper-img">
+          <div class="overlay">
+            <a href="#" class="download-btn" onclick="downloadWallpaper('dark3')">Download</a>
+          </div>
+        </div>
+        <div class="wallpaper-card">
+          <img src="/api/placeholder/160/320" alt="Dark city" class="wallpaper-img">
+          <div class="overlay">
+            <a href="#" class="download-btn" onclick="downloadWallpaper('dark4')">Download</a>
+          </div>
+        </div>
+        <div class="wallpaper-card">
+          <img src="/api/placeholder/160/320" alt="Dark nature" class="wallpaper-img">
+          <div class="overlay">
+            <a href="#" class="download-btn" onclick="downloadWallpaper('dark5')">Download</a>
+          </div>
+        </div>
+      </div>
+    </section>
+    
+    <!-- Space Category -->
+    <section class="category-section" data-scroll data-scroll-speed="1">
+      <h2 class="category-title">Space</h2>
+      <div class="wallpapers-container">
+        <div class="wallpaper-card">
+          <img src="/api/placeholder/160/320" alt="Galaxy" class="wallpaper-img">
+          <div class="overlay">
+            <a href="#" class="download-btn" onclick="downloadWallpaper('space1')">Download</a>
+          </div>
+        </div>
+        <div class="wallpaper-card">
+          <img src="/api/placeholder/160/320" alt="Nebula" class="wallpaper-img">
+          <div class="overlay">
+            <a href="#" class="download-btn" onclick="downloadWallpaper('space2')">Download</a>
+          </div>
+        </div>
+        <div class="wallpaper-card">
+          <img src="/api/placeholder/160/320" alt="Stars" class="wallpaper-img">
+          <div class="overlay">
+            <a href="#" class="download-btn" onclick="downloadWallpaper('space3')">Download</a>
+          </div>
+        </div>
+        <div class="wallpaper-card">
+          <img src="/api/placeholder/160/320" alt="Planet" class="wallpaper-img">
+          <div class="overlay">
+            <a href="#" class="download-btn" onclick="downloadWallpaper('space4')">Download</a>
+          </div>
+        </div>
+        <div class="wallpaper-card">
+          <img src="/api/placeholder/160/320" alt="Space abstract" class="wallpaper-img">
+          <div class="overlay">
+            <a href="#" class="download-btn" onclick="downloadWallpaper('space5')">Download</a>
+          </div>
+        </div>
+      </div>
+    </section>
+    
+    <!-- Anime Category -->
+    <section class="category-section" data-scroll data-scroll-speed="1">
+      <h2 class="category-title">Anime</h2>
+      <div class="wallpapers-container">
+        <div class="wallpaper-card">
+          <img src="/api/placeholder/160/320" alt="Anime character" class="wallpaper-img">
+          <div class="overlay">
+            <a href="#" class="download-btn" onclick="downloadWallpaper('anime1')">Download</a>
+          </div>
+        </div>
+        <div class="wallpaper-card">
+          <img src="/api/placeholder/160/320" alt="Anime landscape" class="wallpaper-img">
+          <div class="overlay">
+            <a href="#" class="download-btn" onclick="downloadWallpaper('anime2')">Download</a>
+          </div>
+        </div>
+        <div class="wallpaper-card">
+          <img src="/api/placeholder/160/320" alt="Anime art" class="wallpaper-img">
+          <div class="overlay">
+            <a href="#" class="download-btn" onclick="downloadWallpaper('anime3')">Download</a>
+          </div>
+        </div>
+        <div class="wallpaper-card">
+          <img src="/api/placeholder/160/320" alt="Anime scenes" class="wallpaper-img">
+          <div class="overlay">
+            <a href="#" class="download-btn" onclick="downloadWallpaper('anime4')">Download</a>
+          </div>
+        </div>
+        <div class="wallpaper-card">
+          <img src="/api/placeholder/160/320" alt="Anime minimal" class="wallpaper-img">
+          <div class="overlay">
+            <a href="#" class="download-btn" onclick="downloadWallpaper('anime5')">Download</a>
+          </div>
+        </div>
+      </div>
+    </section>
+  </div>
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/locomotive-scroll/4.1.4/locomotive-scroll.min.js"></script>
+  <script>
+    document.addEventListener('DOMContentLoaded', function() {
+      // Initialize Locomotive Scroll
+      const scroll = new LocomotiveScroll({
+        el: document.querySelector('[data-scroll-container]'),
+        smooth: true,
+        smartphone: {
+          smooth: true
+        },
+        tablet: {
+          smooth: true
+        }
+      });
+
+      // Force locomotive scroll to recalculate sizes on window resize
+      window.addEventListener('resize', () => {
+        scroll.update();
+      });
+    });
+
+    // Header scroll behavior with more sensitive trigger
+    const header = document.getElementById('header');
+    const threshold = 10; // Reduced threshold for more sensitive response
+    window.addEventListener('scroll', () => {
+      if (window.scrollY > threshold) {
+        header.classList.add('scrolled');
+      } else {
+        header.classList.remove('scrolled');
+      }
+    });
+
+    // Add click handler for back button
+    document.querySelector('.back-btn').addEventListener('click', function() {
+      window.history.back();
+    });
+
+    // Function to download wallpaper
+    function downloadWallpaper(id) {
+      // Get the image source from the clicked wallpaper card
+      const card = event.target.closest('.wallpaper-card');
+      const img = card.querySelector('.wallpaper-img');
+      const imgSrc = img.src;
+      
+      // Create a temporary anchor element to trigger download
+      const link = document.createElement('a');
+      link.href = imgSrc;
+      link.download = `wallpaper-${id}.jpg`;
+      
+      // Append to the document and trigger click
+      document.body.appendChild(link);
+      link.click();
+      
+      // Clean up
+      document.body.removeChild(link);
+      
+      // Prevent default link behavior
+      event.preventDefault();
+    }
+  </script>
+</body>
+</html>

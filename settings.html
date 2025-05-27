@@ -218,7 +218,22 @@
       margin-right: 10px;
     }
 
-
+    /* Status indicator for AI toggle */
+    .ai-status {
+      position: absolute;
+      top: -5px;
+      right: -5px;
+      width: 12px;
+      height: 12px;
+      border-radius: 50%;
+      background-color: #00ff00;
+      opacity: 0;
+      transition: opacity 0.3s ease;
+    }
+    
+    .toggle-switch.active .ai-status {
+      opacity: 1;
+    }
   </style>
 </head>
 <body>
@@ -286,9 +301,10 @@
             <div class="settings-item-title">Evora Ai intelligence</div>
             <div class="settings-item-description">Evora Ai help to maintain better experience to user it's personalized content according to user</div>
           </div>
-          <label class="toggle-switch">
+          <label class="toggle-switch" id="aiToggleContainer">
             <input type="checkbox" id="aiToggle">
             <span class="slider"></span>
+            <div class="ai-status"></div>
           </label>
         </div>
         
@@ -300,8 +316,6 @@
         </div>
       </div>
     </div>
-    
-
     
     <!-- About Section -->
     <div class="section">
@@ -325,7 +339,116 @@
   </div>
 
   <script>
+    // Settings storage system using cookies (alternative to localStorage for Claude.ai)
+    const SettingsManager = {
+      // Save setting to cookie
+      saveSetting: function(key, value) {
+        const expires = new Date();
+        expires.setTime(expires.getTime() + (365 * 24 * 60 * 60 * 1000)); // 1 year
+        document.cookie = `evora_${key}=${value};expires=${expires.toUTCString()};path=/`;
+        console.log(`Setting saved: ${key} = ${value}`);
+      },
+      
+      // Load setting from cookie
+      loadSetting: function(key) {
+        const name = `evora_${key}=`;
+        const decodedCookie = decodeURIComponent(document.cookie);
+        const ca = decodedCookie.split(';');
+        for(let i = 0; i < ca.length; i++) {
+          let c = ca[i];
+          while (c.charAt(0) === ' ') {
+            c = c.substring(1);
+          }
+          if (c.indexOf(name) === 0) {
+            const value = c.substring(name.length, c.length);
+            console.log(`Setting loaded: ${key} = ${value}`);
+            return value;
+          }
+        }
+        return null;
+      }
+    };
 
+    // AI Intelligence Toggle Management
+    const AIToggleManager = {
+      init: function() {
+        this.toggle = document.getElementById('aiToggle');
+        this.container = document.getElementById('aiToggleContainer');
+        
+        // Load saved state on page load
+        this.loadState();
+        
+        // Add event listener for toggle changes
+        this.toggle.addEventListener('change', () => {
+          this.handleToggleChange();
+        });
+      },
+      
+      loadState: function() {
+        const savedState = SettingsManager.loadSetting('ai_intelligence');
+        if (savedState === 'true') {
+          this.toggle.checked = true;
+          this.container.classList.add('active');
+          console.log('AI Intelligence loaded as enabled');
+        } else {
+          this.toggle.checked = false;
+          this.container.classList.remove('active');
+          console.log('AI Intelligence loaded as disabled');
+        }
+      },
+      
+      handleToggleChange: function() {
+        const isEnabled = this.toggle.checked;
+        
+        // Save the state
+        SettingsManager.saveSetting('ai_intelligence', isEnabled.toString());
+        
+        // Update visual indicator
+        if (isEnabled) {
+          this.container.classList.add('active');
+          console.log('AI Intelligence enabled and saved');
+          this.showNotification('AI Intelligence enabled');
+        } else {
+          this.container.classList.remove('active');
+          console.log('AI Intelligence disabled and saved');
+          this.showNotification('AI Intelligence disabled');
+        }
+      },
+      
+      showNotification: function(message) {
+        // Create a temporary notification
+        const notification = document.createElement('div');
+        notification.style.cssText = `
+          position: fixed;
+          top: 100px;
+          right: 20px;
+          background: #333;
+          color: white;
+          padding: 12px 20px;
+          border-radius: 8px;
+          font-size: 14px;
+          z-index: 10000;
+          opacity: 0;
+          transition: opacity 0.3s ease;
+        `;
+        notification.textContent = message;
+        
+        document.body.appendChild(notification);
+        
+        // Animate in
+        setTimeout(() => {
+          notification.style.opacity = '1';
+        }, 100);
+        
+        // Remove after 2 seconds
+        setTimeout(() => {
+          notification.style.opacity = '0';
+          setTimeout(() => {
+            document.body.removeChild(notification);
+          }, 300);
+        }, 2000);
+      }
+    };
 
     // Header scroll behavior
     const header = document.getElementById('header');
@@ -373,29 +496,20 @@
       alert('Opening Help & feedback...');
     }
 
-    // AI Toggle functionality with persistence
-    document.getElementById('aiToggle').addEventListener('change', function() {
-      aiSettings.enabled = this.checked;
-      aiSettings.lastToggled = new Date().toISOString();
-      
-      saveAISettings();
-      updateAIStatus();
-      
-      if (this.checked) {
-        console.log('AI Intelligence enabled and saved');
-        // Show confirmation
-        setTimeout(() => {
-          alert('Evora AI Intelligence is now enabled. Your preferences will be saved until you manually turn it off or clear app data.');
-        }, 100);
-      } else {
-        console.log('AI Intelligence disabled and saved');
-        setTimeout(() => {
-          alert('Evora AI Intelligence has been disabled.');
-        }, 100);
-      }
+    // Initialize the app when DOM is loaded
+    document.addEventListener('DOMContentLoaded', function() {
+      AIToggleManager.init();
+      console.log('Settings app initialized with persistent AI toggle');
     });
 
-
+    // Also initialize if DOM is already loaded
+    if (document.readyState === 'loading') {
+      document.addEventListener('DOMContentLoaded', function() {
+        AIToggleManager.init();
+      });
+    } else {
+      AIToggleManager.init();
+    }
   </script>
 </body>
-      </html>
+  </html>

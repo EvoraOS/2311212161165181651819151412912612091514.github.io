@@ -217,6 +217,8 @@
       margin-left: auto;
       margin-right: 10px;
     }
+
+
   </style>
 </head>
 <body>
@@ -299,6 +301,8 @@
       </div>
     </div>
     
+
+    
     <!-- About Section -->
     <div class="section">
       <div class="section-title">About</div>
@@ -321,6 +325,8 @@
   </div>
 
   <script>
+
+
     // Header scroll behavior
     const header = document.getElementById('header');
     const threshold = 10;
@@ -367,14 +373,29 @@
       alert('Opening Help & feedback...');
     }
 
-    // AI Toggle functionality
+    // AI Toggle functionality with persistence
     document.getElementById('aiToggle').addEventListener('change', function() {
+      aiSettings.enabled = this.checked;
+      aiSettings.lastToggled = new Date().toISOString();
+      
+      saveAISettings();
+      updateAIStatus();
+      
       if (this.checked) {
-        console.log('AI Intelligence enabled');
+        console.log('AI Intelligence enabled and saved');
+        // Show confirmation
+        setTimeout(() => {
+          alert('Evora AI Intelligence is now enabled. Your preferences will be saved until you manually turn it off or clear app data.');
+        }, 100);
       } else {
-        console.log('AI Intelligence disabled');
+        console.log('AI Intelligence disabled and saved');
+        setTimeout(() => {
+          alert('Evora AI Intelligence has been disabled.');
+        }, 100);
       }
     });
+
+
   </script>
 </body>
-</html>
+      </html>

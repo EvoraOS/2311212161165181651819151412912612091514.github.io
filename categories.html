@@ -7,7 +7,7 @@
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/locomotive-scroll/4.1.4/locomotive-scroll.min.css">
   <style>
     :root {
-      --header-height-large: 140px; /* Increased from 120px to accommodate extra spacing */
+      --header-height-large: 140px;
       --header-height-small: 56px;
     }
     * {
@@ -37,12 +37,12 @@
       z-index: 1000;
     }
     .top-row {
-      height: calc(var(--header-height-small) + 24px); /* Added extra height for spacing */
+      height: calc(var(--header-height-small) + 24px);
       display: flex;
       align-items: center;
       justify-content: flex-start;
-      padding: 24px 16px 0; /* Back to original padding */
-      margin-bottom: 30px; /* Added vertical spacing between back button and title */
+      padding: 24px 16px 0;
+      margin-bottom: 30px;
       box-sizing: border-box;
     }
     .back-btn {
@@ -71,7 +71,7 @@
       flex: 1;
       display: flex;
       align-items: flex-end;
-      padding: 0 16px 16px 16px; /* Back to original left padding so title starts from left */
+      padding: 0 16px 16px 16px;
       box-sizing: border-box;
     }
     .large-title {
@@ -84,7 +84,7 @@
                   opacity 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94);
     }
     header.scrolled {
-      height: calc(var(--header-height-small) + 24px); /* Adjusted for new spacing */
+      height: calc(var(--header-height-small) + 24px);
     }
     header.scrolled .large-title {
       opacity: 0;
@@ -98,7 +98,7 @@
     .container {
       padding: 20px;
       width: 100%;
-      margin-top: calc(var(--header-height-large) + 24px); /* Adjusted for new header height */
+      margin-top: calc(var(--header-height-large) + 24px);
       padding-top: 40px;
     }
     
@@ -212,33 +212,33 @@
       <h2 class="category-title">Nature</h2>
       <div class="wallpapers-container">
         <div class="wallpaper-card">
-          <img src="/api/placeholder/160/320" alt="Forest landscape" class="wallpaper-img">
+          <img src="https://w.wallhaven.cc/full/4x/wallhaven-4xqzjl.jpg" alt="Forest landscape" class="wallpaper-img">
           <div class="overlay">
-            <a href="#" class="download-btn" onclick="downloadWallpaper('nature1')">Download</a>
+            <a href="#" class="download-btn" onclick="downloadWallpaper('https://w.wallhaven.cc/full/4x/wallhaven-4xqzjl.jpg', 'nature-forest')">Download</a>
           </div>
         </div>
         <div class="wallpaper-card">
-          <img src="/api/placeholder/160/320" alt="Mountain view" class="wallpaper-img">
+          <img src="https://w.wallhaven.cc/full/6o/wallhaven-6o3dzx.jpg" alt="Mountain view" class="wallpaper-img">
           <div class="overlay">
-            <a href="#" class="download-btn" onclick="downloadWallpaper('nature2')">Download</a>
+            <a href="#" class="download-btn" onclick="downloadWallpaper('https://w.wallhaven.cc/full/6o/wallhaven-6o3dzx.jpg', 'nature-mountain')">Download</a>
           </div>
         </div>
         <div class="wallpaper-card">
-          <img src="/api/placeholder/160/320" alt="Ocean sunset" class="wallpaper-img">
+          <img src="https://w.wallhaven.cc/full/dp/wallhaven-dpoqg7.jpg" alt="Ocean sunset" class="wallpaper-img">
           <div class="overlay">
-            <a href="#" class="download-btn" onclick="downloadWallpaper('nature3')">Download</a>
+            <a href="#" class="download-btn" onclick="downloadWallpaper('https://w.wallhaven.cc/full/dp/wallhaven-dpoqg7.jpg', 'nature-ocean')">Download</a>
           </div>
         </div>
         <div class="wallpaper-card">
-          <img src="/api/placeholder/160/320" alt="Waterfall" class="wallpaper-img">
+          <img src="https://w.wallhaven.cc/full/y8/wallhaven-y8lqo1.jpg" alt="Waterfall" class="wallpaper-img">
           <div class="overlay">
-            <a href="#" class="download-btn" onclick="downloadWallpaper('nature4')">Download</a>
+            <a href="#" class="download-btn" onclick="downloadWallpaper('https://w.wallhaven.cc/full/y8/wallhaven-y8lqo1.jpg', 'nature-waterfall')">Download</a>
           </div>
         </div>
         <div class="wallpaper-card">
-          <img src="/api/placeholder/160/320" alt="Lush green forest" class="wallpaper-img">
+          <img src="https://w.wallhaven.cc/full/0p/wallhaven-0p39ky.jpg" alt="Lush green forest" class="wallpaper-img">
           <div class="overlay">
-            <a href="#" class="download-btn" onclick="downloadWallpaper('nature5')">Download</a>
+            <a href="#" class="download-btn" onclick="downloadWallpaper('https://w.wallhaven.cc/full/0p/wallhaven-0p39ky.jpg', 'nature-green')">Download</a>
           </div>
         </div>
       </div>
@@ -249,33 +249,33 @@
       <h2 class="category-title">Buildings</h2>
       <div class="wallpapers-container">
         <div class="wallpaper-card">
-          <img src="/api/placeholder/160/320" alt="Modern skyscraper" class="wallpaper-img">
+          <img src="https://w.wallhaven.cc/full/6k/wallhaven-6keo37.jpg" alt="Modern skyscraper" class="wallpaper-img">
           <div class="overlay">
-            <a href="#" class="download-btn" onclick="downloadWallpaper('building1')">Download</a>
+            <a href="#" class="download-btn" onclick="downloadWallpaper('https://w.wallhaven.cc/full/6k/wallhaven-6keo37.jpg', 'building-skyscraper')">Download</a>
           </div>
         </div>
         <div class="wallpaper-card">
-          <img src="/api/placeholder/160/320" alt="Historic architecture" class="wallpaper-img">
+          <img src="https://w.wallhaven.cc/full/zy/wallhaven-zy978l.jpg" alt="Historic architecture" class="wallpaper-img">
           <div class="overlay">
-            <a href="#" class="download-btn" onclick="downloadWallpaper('building2')">Download</a>
+            <a href="#" class="download-btn" onclick="downloadWallpaper('https://w.wallhaven.cc/full/zy/wallhaven-zy978l.jpg', 'building-historic')">Download</a>
           </div>
         </div>
         <div class="wallpaper-card">
-          <img src="/api/placeholder/160/320" alt="City skyline" class="wallpaper-img">
+          <img src="https://w.wallhaven.cc/full/xl/wallhaven-xl83mq.jpg" alt="City skyline" class="wallpaper-img">
           <div class="overlay">
-            <a href="#" class="download-btn" onclick="downloadWallpaper('building3')">Download</a>
+            <a href="#" class="download-btn" onclick="downloadWallpaper('https://w.wallhaven.cc/full/xl/wallhaven-xl83mq.jpg', 'building-skyline')">Download</a>
           </div>
         </div>
         <div class="wallpaper-card">
-          <img src="/api/placeholder/160/320" alt="Bridge structure" class="wallpaper-img">
+          <img src="https://w.wallhaven.cc/full/2e/wallhaven-2e739q.jpg" alt="Bridge structure" class="wallpaper-img">
           <div class="overlay">
-            <a href="#" class="download-btn" onclick="downloadWallpaper('building4')">Download</a>
+            <a href="#" class="download-btn" onclick="downloadWallpaper('https://w.wallhaven.cc/full/2e/wallhaven-2e739q.jpg', 'building-bridge')">Download</a>
           </div>
         </div>
         <div class="wallpaper-card">
-          <img src="/api/placeholder/160/320" alt="Urban landscape" class="wallpaper-img">
+          <img src="https://w.wallhaven.cc/full/rd/wallhaven-rdx2p3.jpg" alt="Urban landscape" class="wallpaper-img">
           <div class="overlay">
-            <a href="#" class="download-btn" onclick="downloadWallpaper('building5')">Download</a>
+            <a href="#" class="download-btn" onclick="downloadWallpaper('https://w.wallhaven.cc/full/rd/wallhaven-rdx2p3.jpg', 'building-urban')">Download</a>
           </div>
         </div>
       </div>
@@ -286,33 +286,33 @@
       <h2 class="category-title">Abstract</h2>
       <div class="wallpapers-container">
         <div class="wallpaper-card">
-          <img src="/api/placeholder/160/320" alt="Colorful abstract" class="wallpaper-img">
+          <img src="https://w.wallhaven.cc/full/k7/wallhaven-k7w6e3.jpg" alt="Colorful abstract" class="wallpaper-img">
           <div class="overlay">
-            <a href="#" class="download-btn" onclick="downloadWallpaper('abstract1')">Download</a>
+            <a href="#" class="download-btn" onclick="downloadWallpaper('https://w.wallhaven.cc/full/k7/wallhaven-k7w6e3.jpg', 'abstract-colorful')">Download</a>
           </div>
         </div>
         <div class="wallpaper-card">
-          <img src="/api/placeholder/160/320" alt="Geometric patterns" class="wallpaper-img">
+          <img src="https://w.wallhaven.cc/full/3z/wallhaven-3z3oe1.jpg" alt="Geometric patterns" class="wallpaper-img">
           <div class="overlay">
-            <a href="#" class="download-btn" onclick="downloadWallpaper('abstract2')">Download</a>
+            <a href="#" class="download-btn" onclick="downloadWallpaper('https://w.wallhaven.cc/full/3z/wallhaven-3z3oe1.jpg', 'abstract-geometric')">Download</a>
           </div>
         </div>
         <div class="wallpaper-card">
-          <img src="/api/placeholder/160/320" alt="Fluid shapes" class="wallpaper-img">
+          <img src="https://w.wallhaven.cc/full/ym/wallhaven-ymoxq9.jpg" alt="Fluid shapes" class="wallpaper-img">
           <div class="overlay">
-            <a href="#" class="download-btn" onclick="downloadWallpaper('abstract3')">Download</a>
+            <a href="#" class="download-btn" onclick="downloadWallpaper('https://w.wallhaven.cc/full/ym/wallhaven-ymoxq9.jpg', 'abstract-fluid')">Download</a>
           </div>
         </div>
         <div class="wallpaper-card">
-          <img src="/api/placeholder/160/320" alt="Digital art" class="wallpaper-img">
+          <img src="https://w.wallhaven.cc/full/r2/wallhaven-r2dg73.jpg" alt="Digital art" class="wallpaper-img">
           <div class="overlay">
-            <a href="#" class="download-btn" onclick="downloadWallpaper('abstract4')">Download</a>
+            <a href="#" class="download-btn" onclick="downloadWallpaper('https://w.wallhaven.cc/full/r2/wallhaven-r2dg73.jpg', 'abstract-digital')">Download</a>
           </div>
         </div>
         <div class="wallpaper-card">
-          <img src="/api/placeholder/160/320" alt="Minimalist abstract" class="wallpaper-img">
+          <img src="https://w.wallhaven.cc/full/z8/wallhaven-z8dg9y.jpg" alt="Minimalist abstract" class="wallpaper-img">
           <div class="overlay">
-            <a href="#" class="download-btn" onclick="downloadWallpaper('abstract5')">Download</a>
+            <a href="#" class="download-btn" onclick="downloadWallpaper('https://w.wallhaven.cc/full/z8/wallhaven-z8dg9y.jpg', 'abstract-minimal')">Download</a>
           </div>
         </div>
       </div>
@@ -323,33 +323,33 @@
       <h2 class="category-title">Minimalist</h2>
       <div class="wallpapers-container">
         <div class="wallpaper-card">
-          <img src="/api/placeholder/160/320" alt="Simple lines" class="wallpaper-img">
+          <img src="https://w.wallhaven.cc/full/wq/wallhaven-wqery6.jpg" alt="Simple lines" class="wallpaper-img">
           <div class="overlay">
-            <a href="#" class="download-btn" onclick="downloadWallpaper('minimal1')">Download</a>
+            <a href="#" class="download-btn" onclick="downloadWallpaper('https://w.wallhaven.cc/full/wq/wallhaven-wqery6.jpg', 'minimal-lines')">Download</a>
           </div>
         </div>
         <div class="wallpaper-card">
-          <img src="/api/placeholder/160/320" alt="Zen minimal" class="wallpaper-img">
+          <img src="https://w.wallhaven.cc/full/kx/wallhaven-kxl1wy.jpg" alt="Zen minimal" class="wallpaper-img">
           <div class="overlay">
-            <a href="#" class="download-btn" onclick="downloadWallpaper('minimal2')">Download</a>
+            <a href="#" class="download-btn" onclick="downloadWallpaper('https://w.wallhaven.cc/full/kx/wallhaven-kxl1wy.jpg', 'minimal-zen')">Download</a>
           </div>
         </div>
         <div class="wallpaper-card">
-          <img src="/api/placeholder/160/320" alt="Color blocks" class="wallpaper-img">
+          <img src="https://w.wallhaven.cc/full/6d/wallhaven-6djoy1.jpg" alt="Color blocks" class="wallpaper-img">
           <div class="overlay">
-            <a href="#" class="download-btn" onclick="downloadWallpaper('minimal3')">Download</a>
+            <a href="#" class="download-btn" onclick="downloadWallpaper('https://w.wallhaven.cc/full/6d/wallhaven-6djoy1.jpg', 'minimal-blocks')">Download</a>
           </div>
         </div>
         <div class="wallpaper-card">
-          <img src="/api/placeholder/160/320" alt="Gradient minimal" class="wallpaper-img">
+          <img src="https://w.wallhaven.cc/full/85/wallhaven-857ox1.jpg" alt="Gradient minimal" class="wallpaper-img">
           <div class="overlay">
-            <a href="#" class="download-btn" onclick="downloadWallpaper('minimal4')">Download</a>
+            <a href="#" class="download-btn" onclick="downloadWallpaper('https://w.wallhaven.cc/full/85/wallhaven-857ox1.jpg', 'minimal-gradient')">Download</a>
           </div>
         </div>
         <div class="wallpaper-card">
-          <img src="/api/placeholder/160/320" alt="Black and white" class="wallpaper-img">
+          <img src="https://w.wallhaven.cc/full/ey/wallhaven-eyx3ml.jpg" alt="Black and white" class="wallpaper-img">
           <div class="overlay">
-            <a href="#" class="download-btn" onclick="downloadWallpaper('minimal5')">Download</a>
+            <a href="#" class="download-btn" onclick="downloadWallpaper('https://w.wallhaven.cc/full/ey/wallhaven-eyx3ml.jpg', 'minimal-bw')">Download</a>
           </div>
         </div>
       </div>
@@ -360,33 +360,33 @@
       <h2 class="category-title">Dark</h2>
       <div class="wallpapers-container">
         <div class="wallpaper-card">
-          <img src="/api/placeholder/160/320" alt="Night sky" class="wallpaper-img">
+          <img src="https://w.wallhaven.cc/full/pk/wallhaven-pkx3my.jpg" alt="Night sky" class="wallpaper-img">
           <div class="overlay">
-            <a href="#" class="download-btn" onclick="downloadWallpaper('dark1')">Download</a>
+            <a href="#" class="download-btn" onclick="downloadWallpaper('https://w.wallhaven.cc/full/pk/wallhaven-pkx3my.jpg', 'dark-night')">Download</a>
           </div>
         </div>
         <div class="wallpaper-card">
-          <img src="/api/placeholder/160/320" alt="Dark patterns" class="wallpaper-img">
+          <img src="https://w.wallhaven.cc/full/1k/wallhaven-1k9ox1.jpg" alt="Dark patterns" class="wallpaper-img">
           <div class="overlay">
-            <a href="#" class="download-btn" onclick="downloadWallpaper('dark2')">Download</a>
+            <a href="#" class="download-btn" onclick="downloadWallpaper('https://w.wallhaven.cc/full/1k/wallhaven-1k9ox1.jpg', 'dark-patterns')">Download</a>
           </div>
         </div>
         <div class="wallpaper-card">
-          <img src="/api/placeholder/160/320" alt="Dark abstract" class="wallpaper-img">
+          <img src="https://w.wallhaven.cc/full/v9/wallhaven-v97x31.jpg" alt="Dark abstract" class="wallpaper-img">
           <div class="overlay">
-            <a href="#" class="download-btn" onclick="downloadWallpaper('dark3')">Download</a>
+            <a href="#" class="download-btn" onclick="downloadWallpaper('https://w.wallhaven.cc/full/v9/wallhaven-v97x31.jpg', 'dark-abstract')">Download</a>
           </div>
         </div>
         <div class="wallpaper-card">
-          <img src="/api/placeholder/160/320" alt="Dark city" class="wallpaper-img">
+          <img src="https://w.wallhaven.cc/full/72/wallhaven-72k3xl.jpg" alt="Dark city" class="wallpaper-img">
           <div class="overlay">
-            <a href="#" class="download-btn" onclick="downloadWallpaper('dark4')">Download</a>
+            <a href="#" class="download-btn" onclick="downloadWallpaper('https://w.wallhaven.cc/full/72/wallhaven-72k3xl.jpg', 'dark-city')">Download</a>
           </div>
         </div>
         <div class="wallpaper-card">
-          <img src="/api/placeholder/160/320" alt="Dark nature" class="wallpaper-img">
+          <img src="https://w.wallhaven.cc/full/28/wallhaven-28qzr1.jpg" alt="Dark nature" class="wallpaper-img">
           <div class="overlay">
-            <a href="#" class="download-btn" onclick="downloadWallpaper('dark5')">Download</a>
+            <a href="#" class="download-btn" onclick="downloadWallpaper('https://w.wallhaven.cc/full/28/wallhaven-28qzr1.jpg', 'dark-nature')">Download</a>
           </div>
         </div>
       </div>
@@ -397,33 +397,33 @@
       <h2 class="category-title">Space</h2>
       <div class="wallpapers-container">
         <div class="wallpaper-card">
-          <img src="/api/placeholder/160/320" alt="Galaxy" class="wallpaper-img">
+          <img src="https://w.wallhaven.cc/full/4o/wallhaven-4o2x9l.jpg" alt="Galaxy" class="wallpaper-img">
           <div class="overlay">
-            <a href="#" class="download-btn" onclick="downloadWallpaper('space1')">Download</a>
+            <a href="#" class="download-btn" onclick="downloadWallpaper('https://w.wallhaven.cc/full/4o/wallhaven-4o2x9l.jpg', 'space-galaxy')">Download</a>
           </div>
         </div>
         <div class="wallpaper-card">
-          <img src="/api/placeholder/160/320" alt="Nebula" class="wallpaper-img">
+          <img src="https://w.wallhaven.cc/full/rr/wallhaven-rrdpom.jpg" alt="Nebula" class="wallpaper-img">
           <div class="overlay">
-            <a href="#" class="download-btn" onclick="downloadWallpaper('space2')">Download</a>
+            <a href="#" class="download-btn" onclick="downloadWallpaper('https://w.wallhaven.cc/full/rr/wallhaven-rrdpom.jpg', 'space-nebula')">Download</a>
           </div>
         </div>
         <div class="wallpaper-card">
-          <img src="/api/placeholder/160/320" alt="Stars" class="wallpaper-img">
+          <img src="https://w.wallhaven.cc/full/13/wallhaven-13eo9q.jpg" alt="Stars" class="wallpaper-img">
           <div class="overlay">
-            <a href="#" class="download-btn" onclick="downloadWallpaper('space3')">Download</a>
+            <a href="#" class="download-btn" onclick="downloadWallpaper('https://w.wallhaven.cc/full/13/wallhaven-13eo9q.jpg', 'space-stars')">Download</a>
           </div>
         </div>
         <div class="wallpaper-card">
-          <img src="/api/placeholder/160/320" alt="Planet" class="wallpaper-img">
+          <img src="https://w.wallhaven.cc/full/4x/wallhaven-4x6ox1.jpg" alt="Planet" class="wallpaper-img">
           <div class="overlay">
-            <a href="#" class="download-btn" onclick="downloadWallpaper('space4')">Download</a>
+            <a href="#" class="download-btn" onclick="downloadWallpaper('https://w.wallhaven.cc/full/4x/wallhaven-4x6ox1.jpg', 'space-planet')">Download</a>
           </div>
         </div>
         <div class="wallpaper-card">
-          <img src="/api/placeholder/160/320" alt="Space abstract" class="wallpaper-img">
+          <img src="https://w.wallhaven.cc/full/l3/wallhaven-l3k9xy.jpg" alt="Space abstract" class="wallpaper-img">
           <div class="overlay">
-            <a href="#" class="download-btn" onclick="downloadWallpaper('space5')">Download</a>
+            <a href="#" class="download-btn" onclick="downloadWallpaper('https://w.wallhaven.cc/full/l3/wallhaven-l3k9xy.jpg', 'space-abstract')">Download</a>
           </div>
         </div>
       </div>
@@ -434,33 +434,33 @@
       <h2 class="category-title">Anime</h2>
       <div class="wallpapers-container">
         <div class="wallpaper-card">
-          <img src="/api/placeholder/160/320" alt="Anime character" class="wallpaper-img">
+          <img src="https://w.wallhaven.cc/full/ex/wallhaven-ex8k3l.jpg" alt="Anime character" class="wallpaper-img">
           <div class="overlay">
-            <a href="#" class="download-btn" onclick="downloadWallpaper('anime1')">Download</a>
+            <a href="#" class="download-btn" onclick="downloadWallpaper('https://w.wallhaven.cc/full/ex/wallhaven-ex8k3l.jpg', 'anime-character')">Download</a>
           </div>
         </div>
         <div class="wallpaper-card">
-          <img src="/api/placeholder/160/320" alt="Anime landscape" class="wallpaper-img">
+          <img src="https://w.wallhaven.cc/full/0j/wallhaven-0jgox1.jpg" alt="Anime landscape" class="wallpaper-img">
           <div class="overlay">
-            <a href="#" class="download-btn" onclick="downloadWallpaper('anime2')">Download</a>
+            <a href="#" class="download-btn" onclick="downloadWallpaper('https://w.wallhaven.cc/full/0j/wallhaven-0jgox1.jpg', 'anime-landscape')">Download</a>
           </div>
         </div>
         <div class="wallpaper-card">
-          <img src="/api/placeholder/160/320" alt="Anime art" class="wallpaper-img">
+          <img src="https://w.wallhaven.cc/full/3l/wallhaven-3lk9xy.jpg" alt="Anime art" class="wallpaper-img">
           <div class="overlay">
-            <a href="#" class="download-btn" onclick="downloadWallpaper('anime3')">Download</a>
+            <a href="#" class="download-btn" onclick="downloadWallpaper('https://w.wallhaven.cc/full/3l/wallhaven-3lk9xy.jpg', 'anime-art')">Download</a>
           </div>
         </div>
         <div class="wallpaper-card">
-          <img src="/api/placeholder/160/320" alt="Anime scenes" class="wallpaper-img">
+          <img src="https://w.wallhaven.cc/full/9m/wallhaven-9mjoy1.jpg" alt="Anime scenes" class="wallpaper-img">
           <div class="overlay">
-            <a href="#" class="download-btn" onclick="downloadWallpaper('anime4')">Download</a>
+            <a href="#" class="download-btn" onclick="downloadWallpaper('https://w.wallhaven.cc/full/9m/wallhaven-9mjoy1.jpg', 'anime-scenes')">Download</a>
           </div>
         </div>
         <div class="wallpaper-card">
-          <img src="/api/placeholder/160/320" alt="Anime minimal" class="wallpaper-img">
+          <img src="https://w.wallhaven.cc/full/zm/wallhaven-zmk9xy.jpg" alt="Anime minimal" class="wallpaper-img">
           <div class="overlay">
-            <a href="#" class="download-btn" onclick="downloadWallpaper('anime5')">Download</a>
+            <a href="#" class="download-btn" onclick="downloadWallpaper('https://w.wallhaven.cc/full/zm/wallhaven-zmk9xy.jpg', 'anime-minimal')">Download</a>
           </div>
         </div>
       </div>
@@ -490,7 +490,7 @@
 
     // Header scroll behavior with more sensitive trigger
     const header = document.getElementById('header');
-    const threshold = 10; // Reduced threshold for more sensitive response
+    const threshold = 10;
     window.addEventListener('scroll', () => {
       if (window.scrollY > threshold) {
         header.classList.add('scrolled');
@@ -505,27 +505,57 @@
     });
 
     // Function to download wallpaper
-    function downloadWallpaper(id) {
-      // Get the image source from the clicked wallpaper card
-      const card = event.target.closest('.wallpaper-card');
-      const img = card.querySelector('.wallpaper-img');
-      const imgSrc = img.src;
-      
-      // Create a temporary anchor element to trigger download
-      const link = document.createElement('a');
-      link.href = imgSrc;
-      link.download = `wallpaper-${id}.jpg`;
-      
-      // Append to the document and trigger click
-      document.body.appendChild(link);
-      link.click();
-      
-      // Clean up
-      document.body.removeChild(link);
+    async function downloadWallpaper(imageUrl, filename) {
+      try {
+        // Show downloading feedback
+        const button = event.target;
+        const originalText = button.textContent;
+        button.textContent = 'Downloading...';
+        button.style.pointerEvents = 'none';
+        
+        // Fetch the image
+        const response = await fetch(imageUrl, { mode: 'cors' });
+        
+        if (!response.ok) {
+          throw new Error('Failed to fetch image');
+        }
+        
+        const blob = await response.blob();
+        
+        // Create download link
+        const link = document.createElement('a');
+        const url = window.URL.createObjectURL(blob);
+        
+        link.href = url;
+        link.download = `${filename}.jpg`;
+        
+        // Trigger download
+        document.body.appendChild(link);
+        link.click();
+        
+        // Cleanup
+        document.body.removeChild(link);
+        window.URL.revokeObjectURL(url);
+        
+        // Reset button
+        button.textContent = originalText;
+        button.style.pointerEvents = 'auto';
+        
+      } catch (error) {
+        console.error('Download failed:', error);
+        
+        // Fallback: open image in new tab
+        window.open(imageUrl, '_blank');
+        
+        // Reset button
+        const button = event.target;
+        button.textContent = 'Download';
+        button.style.pointerEvents = 'auto';
+      }
       
       // Prevent default link behavior
       event.preventDefault();
     }
   </script>
 </body>
-      </html>
+</html>

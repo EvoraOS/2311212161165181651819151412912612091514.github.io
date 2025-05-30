@@ -1,0 +1,402 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Fonts Collection</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;700&family=Open+Sans:wght@300;400;600;700&family=Lato:wght@300;400;700&family=Montserrat:wght@300;400;500;600;700&family=Poppins:wght@300;400;500;600;700&family=Nunito:wght@300;400;600;700&family=Source+Sans+Pro:wght@300;400;600;700&family=Raleway:wght@300;400;500;600;700&family=Ubuntu:wght@300;400;500;700&family=Playfair+Display:wght@400;500;600;700&family=Merriweather:wght@300;400;700&family=PT+Sans:wght@400;700&family=Oswald:wght@300;400;500;600;700&family=Libre+Baskerville:wght@400;700&family=Crimson+Text:wght@400;600;700&family=Dancing+Script:wght@400;500;600;700&family=Pacifico&family=Lobster&family=Great+Vibes&family=Quicksand:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --header-height-large: 140px;
+      --header-height-small: 56px;
+      --background-color: #F5F5F7;
+    }
+    
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+    }
+    
+    body {
+      background-color: var(--background-color);
+      overflow-x: hidden;
+    }
+    
+    header {
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      height: var(--header-height-large);
+      background: var(--background-color);
+      display: flex;
+      flex-direction: column;
+      box-sizing: border-box;
+      transition: height 0.1s ease;
+      overflow: hidden;
+      z-index: 1000;
+    }
+    
+    .top-row {
+      height: calc(var(--header-height-small) + 24px);
+      display: flex;
+      align-items: center;
+      justify-content: flex-start;
+      padding: 24px 16px 0;
+      margin-bottom: 30px;
+      box-sizing: border-box;
+    }
+    
+    .back-btn {
+      font-size: 1.5rem;
+      cursor: pointer;
+      text-decoration: none;
+      color: #000;
+      width: 24px;
+      height: 24px;
+      background-image: url("https://api.iconify.design/material-symbols:arrow-back-ios.svg?color=%23000000");
+      background-size: contain;
+      background-repeat: no-repeat;
+      background-position: center;
+      text-indent: -9999px;
+    }
+    
+    .small-title {
+      font-size: 1.25rem;
+      margin-left: 16px;
+      opacity: 0;
+      transform: translateY(8px);
+      transition: transform 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94), 
+                  opacity 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+      font-weight: normal;
+    }
+    
+    .title-row {
+      flex: 1;
+      display: flex;
+      align-items: flex-end;
+      padding: 0 16px 16px 16px;
+      box-sizing: border-box;
+    }
+    
+    .large-title {
+      font-size: 2rem;
+      margin: 0;
+      font-weight: normal;
+      opacity: 1;
+      transform: translateY(0);
+      transition: transform 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94), 
+                  opacity 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+    }
+    
+    header.scrolled {
+      height: calc(var(--header-height-small) + 24px);
+    }
+    
+    header.scrolled .large-title {
+      opacity: 0;
+      transform: translateY(-8px);
+    }
+    
+    header.scrolled .small-title {
+      opacity: 1;
+      transform: translateY(0);
+    }
+    
+    .container {
+      padding: 20px;
+      width: 100%;
+      margin-top: calc(var(--header-height-large) + 24px);
+      padding-top: 40px;
+    }
+    
+    .fonts-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
+      gap: 20px;
+      max-width: 1200px;
+      margin: 0 auto;
+    }
+    
+    .font-card {
+      background: white;
+      border-radius: 12px;
+      padding: 24px;
+      transition: transform 0.2s ease;
+      margin: 0 15px;
+    }
+    
+    .font-card:hover {
+      transform: translateY(-2px);
+    }
+    
+    .font-name {
+      font-size: 28px;
+      font-weight: 400;
+      margin-bottom: 16px;
+      color: #333;
+      line-height: 1.2;
+    }
+    
+    .download-btn {
+      background: #000;
+      color: #fff;
+      padding: 10px 20px;
+      border-radius: 50px;
+      font-size: 14px;
+      font-weight: 500;
+      cursor: pointer;
+      border: none;
+      text-decoration: none;
+      display: inline-block;
+      text-align: center;
+      transition: background-color 0.2s ease;
+      width: 100%;
+      margin-top: 12px;
+    }
+    
+    .download-btn:hover {
+      background: #333;
+    }
+    
+    .download-btn:active {
+      transform: scale(0.98);
+    }
+    
+    /* Font family styles */
+    .roboto { font-family: 'Roboto', sans-serif; }
+    .open-sans { font-family: 'Open Sans', sans-serif; }
+    .lato { font-family: 'Lato', sans-serif; }
+    .montserrat { font-family: 'Montserrat', sans-serif; }
+    .poppins { font-family: 'Poppins', sans-serif; }
+    .nunito { font-family: 'Nunito', sans-serif; }
+    .source-sans { font-family: 'Source Sans Pro', sans-serif; }
+    .raleway { font-family: 'Raleway', sans-serif; }
+    .ubuntu { font-family: 'Ubuntu', sans-serif; }
+    .playfair { font-family: 'Playfair Display', serif; }
+    .merriweather { font-family: 'Merriweather', serif; }
+    .pt-sans { font-family: 'PT Sans', sans-serif; }
+    .oswald { font-family: 'Oswald', sans-serif; }
+    .libre-baskerville { font-family: 'Libre Baskerville', serif; }
+    .crimson-text { font-family: 'Crimson Text', serif; }
+    .dancing-script { font-family: 'Dancing Script', cursive; }
+    .pacifico { font-family: 'Pacifico', cursive; }
+    .lobster { font-family: 'Lobster', cursive; }
+    .great-vibes { font-family: 'Great Vibes', cursive; }
+    .quicksand { font-family: 'Quicksand', sans-serif; }
+    
+    @media (max-width: 768px) {
+      .fonts-grid {
+        grid-template-columns: 1fr;
+        gap: 16px;
+      }
+      
+      .font-preview {
+        font-size: 28px;
+      }
+      
+      .container {
+        padding: 16px;
+      }
+      
+      .font-card {
+        margin: 0 10px;
+      }
+    }
+  </style>
+</head>
+<body>
+  <header id="header">
+    <div class="top-row">
+      <div class="back-btn-circle">
+        <div class="back-btn"></div>
+      </div>
+      <div class="small-title">Fonts</div>
+    </div>
+    <div class="title-row">
+      <h1 class="large-title">Fonts</h1>
+    </div>
+  </header>
+  
+  <div class="container">
+    <div class="fonts-grid">
+      
+      <!-- Roboto -->
+      <div class="font-card">
+        <div class="font-name roboto">Roboto</div>
+        <button class="download-btn" onclick="downloadFont('Roboto', 'https://fonts.google.com/download?family=Roboto')">Download</button>
+      </div>
+      
+      <!-- Open Sans -->
+      <div class="font-card">
+        <div class="font-name open-sans">Open Sans</div>
+        <button class="download-btn" onclick="downloadFont('Open Sans', 'https://fonts.google.com/download?family=Open+Sans')">Download</button>
+      </div>
+      
+      <!-- Lato -->
+      <div class="font-card">
+        <div class="font-name lato">Lato</div>
+        <button class="download-btn" onclick="downloadFont('Lato', 'https://fonts.google.com/download?family=Lato')">Download</button>
+      </div>
+      
+      <!-- Montserrat -->
+      <div class="font-card">
+        <div class="font-name montserrat">Montserrat</div>
+        <button class="download-btn" onclick="downloadFont('Montserrat', 'https://fonts.google.com/download?family=Montserrat')">Download</button>
+      </div>
+      
+      <!-- Poppins -->
+      <div class="font-card">
+        <div class="font-name poppins">Poppins</div>
+        <button class="download-btn" onclick="downloadFont('Poppins', 'https://fonts.google.com/download?family=Poppins')">Download</button>
+      </div>
+      
+      <!-- Nunito -->
+      <div class="font-card">
+        <div class="font-name nunito">Nunito</div>
+        <button class="download-btn" onclick="downloadFont('Nunito', 'https://fonts.google.com/download?family=Nunito')">Download</button>
+      </div>
+      
+      <!-- Source Sans Pro -->
+      <div class="font-card">
+        <div class="font-name source-sans">Source Sans Pro</div>
+        <button class="download-btn" onclick="downloadFont('Source Sans Pro', 'https://fonts.google.com/download?family=Source+Sans+Pro')">Download</button>
+      </div>
+      
+      <!-- Raleway -->
+      <div class="font-card">
+        <div class="font-name raleway">Raleway</div>
+        <button class="download-btn" onclick="downloadFont('Raleway', 'https://fonts.google.com/download?family=Raleway')">Download</button>
+      </div>
+      
+      <!-- Ubuntu -->
+      <div class="font-card">
+        <div class="font-name ubuntu">Ubuntu</div>
+        <button class="download-btn" onclick="downloadFont('Ubuntu', 'https://fonts.google.com/download?family=Ubuntu')">Download</button>
+      </div>
+      
+      <!-- Playfair Display -->
+      <div class="font-card">
+        <div class="font-name playfair">Playfair Display</div>
+        <button class="download-btn" onclick="downloadFont('Playfair Display', 'https://fonts.google.com/download?family=Playfair+Display')">Download</button>
+      </div>
+      
+      <!-- Merriweather -->
+      <div class="font-card">
+        <div class="font-name merriweather">Merriweather</div>
+        <button class="download-btn" onclick="downloadFont('Merriweather', 'https://fonts.google.com/download?family=Merriweather')">Download</button>
+      </div>
+      
+      <!-- PT Sans -->
+      <div class="font-card">
+        <div class="font-name pt-sans">PT Sans</div>
+        <button class="download-btn" onclick="downloadFont('PT Sans', 'https://fonts.google.com/download?family=PT+Sans')">Download</button>
+      </div>
+      
+      <!-- Oswald -->
+      <div class="font-card">
+        <div class="font-name oswald">Oswald</div>
+        <button class="download-btn" onclick="downloadFont('Oswald', 'https://fonts.google.com/download?family=Oswald')">Download</button>
+      </div>
+      
+      <!-- Libre Baskerville -->
+      <div class="font-card">
+        <div class="font-name libre-baskerville">Libre Baskerville</div>
+        <button class="download-btn" onclick="downloadFont('Libre Baskerville', 'https://fonts.google.com/download?family=Libre+Baskerville')">Download</button>
+      </div>
+      
+      <!-- Crimson Text -->
+      <div class="font-card">
+        <div class="font-name crimson-text">Crimson Text</div>
+        <button class="download-btn" onclick="downloadFont('Crimson Text', 'https://fonts.google.com/download?family=Crimson+Text')">Download</button>
+      </div>
+      
+      <!-- Dancing Script -->
+      <div class="font-card">
+        <div class="font-name dancing-script">Dancing Script</div>
+        <button class="download-btn" onclick="downloadFont('Dancing Script', 'https://fonts.google.com/download?family=Dancing+Script')">Download</button>
+      </div>
+      
+      <!-- Pacifico -->
+      <div class="font-card">
+        <div class="font-name pacifico">Pacifico</div>
+        <button class="download-btn" onclick="downloadFont('Pacifico', 'https://fonts.google.com/download?family=Pacifico')">Download</button>
+      </div>
+      
+      <!-- Lobster -->
+      <div class="font-card">
+        <div class="font-name lobster">Lobster</div>
+        <button class="download-btn" onclick="downloadFont('Lobster', 'https://fonts.google.com/download?family=Lobster')">Download</button>
+      </div>
+      
+      <!-- Great Vibes -->
+      <div class="font-card">
+        <div class="font-name great-vibes">Great Vibes</div>
+        <button class="download-btn" onclick="downloadFont('Great Vibes', 'https://fonts.google.com/download?family=Great+Vibes')">Download</button>
+      </div>
+      
+      <!-- Quicksand -->
+      <div class="font-card">
+        <div class="font-name quicksand">Quicksand</div>
+        <button class="download-btn" onclick="downloadFont('Quicksand', 'https://fonts.google.com/download?family=Quicksand')">Download</button>
+      </div>
+      
+    </div>
+  </div>
+
+  <script>
+    // Header scroll behavior with more sensitive trigger
+    const header = document.getElementById('header');
+    const threshold = 10;
+    window.addEventListener('scroll', () => {
+      if (window.scrollY > threshold) {
+        header.classList.add('scrolled');
+      } else {
+        header.classList.remove('scrolled');
+      }
+    });
+
+    // Add click handler for back button
+    document.querySelector('.back-btn').addEventListener('click', function() {
+      window.history.back();
+    });
+
+    // Function to download font
+    function downloadFont(fontName, fontUrl) {
+      try {
+        // Create a temporary link element
+        const link = document.createElement('a');
+        link.href = fontUrl;
+        link.target = '_blank';
+        link.rel = 'noopener noreferrer';
+        
+        // Add some visual feedback
+        const button = event.target;
+        const originalText = button.textContent;
+        button.textContent = 'Opening...';
+        button.style.background = '#666';
+        
+        // Trigger the download/redirect
+        document.body.appendChild(link);
+        link.click();
+        document.body.removeChild(link);
+        
+        // Reset button after a short delay
+        setTimeout(() => {
+          button.textContent = originalText;
+          button.style.background = '#000';
+        }, 1000);
+        
+      } catch (error) {
+        console.error('Download failed:', error);
+        // Fallback: open Google Fonts page
+        window.open('https://fonts.google.com/', '_blank');
+      }
+    }
+  </script>
+</body>
+</html>

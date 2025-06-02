@@ -1,0 +1,715 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Battery Monitor</title>
+  <style>
+    :root {
+      --header-height-large: 140px;
+      --header-height-small: 56px;
+    }
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+    }
+    
+    body {
+      background-color: #F5F5F7;
+      overflow-x: hidden;
+    }
+    
+    header {
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      height: var(--header-height-large);
+      background: #F5F5F7;
+      display: flex;
+      flex-direction: column;
+      box-sizing: border-box;
+      transition: height 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+      overflow: hidden;
+      z-index: 1000;
+    }
+    .top-row {
+      height: calc(var(--header-height-small) + 24px);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 24px 16px 0;
+      margin-bottom: 30px;
+      box-sizing: border-box;
+    }
+    .back-btn {
+      font-size: 1.5rem;
+      cursor: pointer;
+      text-decoration: none;
+      color: #000;
+      width: 24px;
+      height: 24px;
+      background-image: url("https://api.iconify.design/material-symbols:arrow-back-ios.svg?color=%23000000");
+      background-size: contain;
+      background-repeat: no-repeat;
+      background-position: center;
+      text-indent: -9999px;
+    }
+
+    .menu-btn {
+      font-size: 1.5rem;
+      cursor: pointer;
+      color: #000;
+      width: 24px;
+      height: 24px;
+      background-image: url("https://api.iconify.design/material-symbols:more-vert.svg?color=%23000000");
+      background-size: contain;
+      background-repeat: no-repeat;
+      background-position: center;
+      text-indent: -9999px;
+      position: relative;
+    }
+    .small-title {
+      font-size: 1.25rem;
+      margin-left: 16px;
+      opacity: 0;
+      transform: translateY(8px);
+      transition: transform 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94), 
+                  opacity 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+      font-weight: normal;
+    }
+    .title-row {
+      flex: 1;
+      display: flex;
+      align-items: flex-end;
+      padding: 0 16px 16px 16px;
+      box-sizing: border-box;
+    }
+    .large-title {
+      font-size: 2rem;
+      margin: 0;
+      font-weight: normal;
+      opacity: 1;
+      transform: translateY(0);
+      transition: transform 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94), 
+                  opacity 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+    }
+    header.scrolled {
+      height: calc(var(--header-height-small) + 24px);
+    }
+    header.scrolled .large-title {
+      opacity: 0;
+      transform: translateY(-8px);
+    }
+    header.scrolled .small-title {
+      opacity: 1;
+      transform: translateY(0);
+    }
+    
+    .container {
+      padding: 16px;
+      width: 100%;
+      margin-top: calc(var(--header-height-large) + 16px);
+      padding-top: 20px;
+      min-height: calc(100vh - var(--header-height-large));
+    }
+    
+    /* Battery percentage section - outside white box */
+    .battery-percentage-section {
+      margin-bottom: 16px;
+    }
+    
+    .battery-percentage {
+      font-size: 2.5rem;
+      font-weight: 600;
+      text-align: right;
+      margin-bottom: 16px;
+      color: #000;
+    }
+    
+    .battery-bar-container {
+      width: 100%;
+      height: 50px;
+      background-color: #d1d1d6;
+      border-radius: 8px;
+      overflow: hidden;
+      margin-bottom: 20px;
+      position: relative;
+    }
+    
+    .battery-bar {
+      height: 100%;
+      background-color: #34c759;
+      transition: width 0.3s ease, background-color 0.3s ease;
+      border-radius: 0;
+    }
+    
+    /* Battery level section - white box */
+    .battery-level-section {
+      background: white;
+      border-radius: 16px;
+      padding: 24px;
+      margin-bottom: 16px;
+      box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+    }
+    
+    .battery-info {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 0;
+    }
+    
+    .battery-level-text {
+      font-size: 1rem;
+      color: #000;
+      font-weight: 500;
+    }
+    
+    .battery-status {
+      font-size: 1rem;
+      color: #007aff;
+      font-weight: 600;
+    }
+    
+    /* Graph section - separate white box */
+    .graph-section {
+      background: white;
+      border-radius: 16px;
+      padding: 24px;
+      box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+    }
+    
+    .graph-container {
+      width: 100%;
+      height: 280px;
+      position: relative;
+      background: transparent;
+    }
+    
+    .graph-lines {
+      position: absolute;
+      width: 100%;
+      height: 100%;
+    }
+    
+    .graph-line {
+      position: absolute;
+      width: 100%;
+      height: 1px;
+      background-color: #ddd;
+    }
+    
+    .graph-line.excellent { top: 20%; }
+    .graph-line.good { top: 50%; }
+    .graph-line.bad { top: 80%; }
+    
+    .graph-labels {
+      position: absolute;
+      right: 0;
+      top: 0;
+      height: 100%;
+      width: 60px;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      padding: 20px 0;
+    }
+    
+    .graph-label {
+      font-size: 0.9rem;
+      color: #8E8E93;
+      text-align: right;
+      font-weight: 500;
+    }
+    
+    .battery-line {
+      position: absolute;
+      left: 0;
+      width: calc(100% - 80px);
+      height: 100%;
+    }
+    
+    .line-path {
+      stroke-width: 4;
+      fill: none;
+      stroke-linecap: round;
+      stroke-linejoin: round;
+      transition: stroke 0.3s ease;
+    }
+
+    /* Shadow path styles */
+    .shadow-path {
+      stroke-width: 0;
+      fill-opacity: 0.3;
+      transition: fill 0.3s ease;
+    }
+    
+    .line-dot {
+      fill: #34c759;
+      r: 8;
+      transition: fill 0.3s ease;
+      stroke: #fff;
+      stroke-width: 2;
+    }
+    
+    .battery-bar.low {
+      background-color: #ff3b30;
+    }
+    
+    .line-path.low {
+      stroke: #ff3b30;
+    }
+
+    .shadow-path.low {
+      fill: #ff3b30;
+    }
+    
+    .line-dot.low {
+      fill: #ff3b30;
+      stroke: #fff;
+      stroke-width: 2;
+    }
+
+    .battery-status.low {
+      color: #ff3b30;
+    }
+
+    .battery-status.charging {
+      color: #34c759;
+    }
+
+    /* Popup overlay and menu styles */
+    .popup-overlay {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(0, 0, 0, 0.2);
+      backdrop-filter: blur(10px);
+      -webkit-backdrop-filter: blur(10px);
+      z-index: 2000;
+      opacity: 0;
+      visibility: hidden;
+      transition: opacity 0.3s ease, visibility 0.3s ease;
+    }
+
+    .popup-overlay.show {
+      opacity: 1;
+      visibility: visible;
+    }
+
+    .popup-menu {
+      position: absolute;
+      top: 80px;
+      right: 16px;
+      background: rgba(255, 255, 255, 0.95);
+      backdrop-filter: blur(20px);
+      -webkit-backdrop-filter: blur(20px);
+      border-radius: 12px;
+      box-shadow: 0 8px 32px rgba(0, 0, 0, 0.2);
+      min-width: 160px;
+      opacity: 0;
+      transform: translateY(-10px) scale(0.95);
+      transition: opacity 0.3s ease, transform 0.3s ease;
+    }
+
+    .popup-overlay.show .popup-menu {
+      opacity: 1;
+      transform: translateY(0) scale(1);
+    }
+
+    .popup-menu-item {
+      padding: 16px 20px;
+      cursor: pointer;
+      font-size: 16px;
+      color: #000;
+      border-bottom: 1px solid rgba(0, 0, 0, 0.1);
+      transition: background-color 0.2s ease;
+    }
+
+    .popup-menu-item:last-child {
+      border-bottom: none;
+    }
+
+    .popup-menu-item:hover {
+      background-color: rgba(0, 0, 0, 0.05);
+    }
+
+    .popup-menu-item:first-child {
+      border-top-left-radius: 12px;
+      border-top-right-radius: 12px;
+    }
+
+    .popup-menu-item:last-child {
+      border-bottom-left-radius: 12px;
+      border-bottom-right-radius: 12px;
+    }
+  </style>
+</head>
+<body>
+  <header id="header">
+    <div class="top-row">
+      <div class="back-btn-circle">
+        <div class="back-btn"></div>
+      </div>
+      <div class="small-title">Battery</div>
+      <div class="menu-btn" id="menuBtn"></div>
+    </div>
+    <div class="title-row">
+      <h1 class="large-title">Battery</h1>
+    </div>
+  </header>
+  
+  <div class="container">
+    <!-- Battery percentage and bar - outside white box -->
+    <div class="battery-percentage-section">
+      <div class="battery-percentage" id="batteryPercentage">--</div>
+      
+      <div class="battery-bar-container">
+        <div class="battery-bar" id="batteryBar"></div>
+      </div>
+    </div>
+    
+    <!-- Battery level info - in white box -->
+    <div class="battery-level-section">
+      <div class="battery-info">
+        <div class="battery-level-text">Battery level</div>
+        <div class="battery-status" id="batteryStatus">--</div>
+      </div>
+    </div>
+    
+    <!-- Graph section - separate white box -->
+    <div class="graph-section">
+      <div class="graph-container">
+        <div class="graph-lines">
+          <div class="graph-line excellent"></div>
+          <div class="graph-line good"></div>
+          <div class="graph-line bad"></div>
+        </div>
+        
+        <div class="graph-labels">
+          <div class="graph-label">Excellent</div>
+          <div class="graph-label">Good</div>
+          <div class="graph-label">Bad</div>
+        </div>
+        
+        <div class="battery-line">
+          <svg width="100%" height="100%" viewBox="0 0 260 290" id="batteryGraph">
+            <defs>
+              <linearGradient id="shadowGradient" x1="0%" y1="0%" x2="0%" y2="100%">
+                <stop offset="0%" style="stop-color:#34c759;stop-opacity:0.4"/>
+                <stop offset="100%" style="stop-color:#34c759;stop-opacity:0.05"/>
+              </linearGradient>
+              <linearGradient id="shadowGradientRed" x1="0%" y1="0%" x2="0%" y2="100%">
+                <stop offset="0%" style="stop-color:#ff3b30;stop-opacity:0.4"/>
+                <stop offset="100%" style="stop-color:#ff3b30;stop-opacity:0.05"/>
+              </linearGradient>
+            </defs>
+            <path id="batteryShadow" class="shadow-path" fill="url(#shadowGradient)" d=""/>
+            <path id="batteryPath" class="line-path" stroke="#34c759" d=""/>
+            <circle id="batteryDot" class="line-dot" cx="0" cy="0"/>
+          </svg>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Popup overlay and menu -->
+  <div class="popup-overlay" id="popupOverlay">
+    <div class="popup-menu" id="popupMenu">
+      <div class="popup-menu-item" onclick="handleMenuClick('settings')">Settings</div>
+      <div class="popup-menu-item" onclick="handleMenuClick('feedback')">Feedback</div>
+    </div>
+  </div>
+
+  <script>
+    let batteryLevel = 64; // Default value for demo
+    let isSupported = false;
+    let scrollListener;
+
+    // Header scroll behavior - fixed implementation
+    function initializeScrollBehavior() {
+      const header = document.getElementById('header');
+      const container = document.querySelector('.container');
+      const threshold = 10;
+      
+      if (scrollListener) {
+        window.removeEventListener('scroll', scrollListener);
+      }
+      
+      scrollListener = () => {
+        const scrollY = window.pageYOffset || document.documentElement.scrollTop;
+        if (scrollY > threshold) {
+          header.classList.add('scrolled');
+        } else {
+          header.classList.remove('scrolled');
+        }
+      };
+      
+      window.addEventListener('scroll', scrollListener, { passive: true });
+    }
+
+    // Back button functionality
+    document.querySelector('.back-btn').addEventListener('click', function(e) {
+      e.preventDefault();
+      if (window.history.length > 1) {
+        window.history.back();
+      } else {
+        // Fallback if no history
+        window.close();
+      }
+    });
+
+    // Menu button and popup functionality
+    const menuBtn = document.getElementById('menuBtn');
+    const popupOverlay = document.getElementById('popupOverlay');
+    const popupMenu = document.getElementById('popupMenu');
+
+    // Show popup menu
+    menuBtn.addEventListener('click', function(e) {
+      e.stopPropagation();
+      popupOverlay.classList.add('show');
+    });
+
+    // Hide popup when clicking on overlay (empty space)
+    popupOverlay.addEventListener('click', function(e) {
+      if (e.target === popupOverlay) {
+        popupOverlay.classList.remove('show');
+      }
+    });
+
+    // Prevent popup from closing when clicking on menu itself
+    popupMenu.addEventListener('click', function(e) {
+      e.stopPropagation();
+    });
+
+    // Handle menu item clicks
+    function handleMenuClick(action) {
+      popupOverlay.classList.remove('show');
+      
+      if (action === 'settings') {
+        alert('Settings clicked - This would open the settings page');
+      } else if (action === 'feedback') {
+        alert('Feedback clicked - This would open the feedback form');
+      }
+    }
+
+    // Close popup with Escape key
+    document.addEventListener('keydown', function(e) {
+      if (e.key === 'Escape') {
+        popupOverlay.classList.remove('show');
+      }
+    });
+
+    // Battery status function
+    function getBatteryStatus(level, charging = false) {
+      if (charging) return "Charging";
+      if (level >= 75) return "Excellent";
+      if (level >= 45) return "Good";
+      if (level >= 20) return "Bad";
+      return "Charging need";
+    }
+
+    // Generate dynamic graph path based on battery level
+    function generateGraphPath(batteryPercent) {
+      const graphWidth = 240; // Reduced to leave space for circle
+      const graphHeight = 280;
+      const startY = 50; // Start from excellent zone
+      
+      // Calculate end position based on battery level
+      let endY;
+      if (batteryPercent >= 75) {
+        // Excellent zone (20% to 40% of graph height)
+        endY = 50 + (75 - batteryPercent) * 0.8;
+      } else if (batteryPercent >= 45) {
+        // Good zone (40% to 60% of graph height)
+        endY = 110 + (75 - batteryPercent) * 1.2;
+      } else if (batteryPercent >= 20) {
+        // Bad zone (60% to 80% of graph height)
+        endY = 140 + (45 - batteryPercent) * 2;
+      } else {
+        // Critical zone (80% to 95% of graph height)
+        endY = 220 + (20 - batteryPercent) * 3;
+      }
+      
+      endY = Math.min(Math.max(endY, 40), 260);
+      
+      // Create path based on battery level - more complex path for lower battery
+      let pathData;
+      const complexity = Math.max(1, (100 - batteryPercent) / 20); // More complexity for lower battery
+      
+      if (batteryPercent >= 75) {
+        // Simple, smooth line for high battery
+        pathData = `M0,${startY} Q60,${startY - 5} 120,${startY + 10} T${graphWidth},${endY}`;
+      } else if (batteryPercent >= 45) {
+        // Slightly more complex for medium battery
+        pathData = `M0,${startY} Q40,${startY - 8} 80,${startY + 15} Q140,${startY + 25} 200,${endY - 20} T${graphWidth},${endY}`;
+      } else if (batteryPercent >= 20) {
+        // More jagged for low battery
+        pathData = `M0,${startY} L30,${startY - 5} L60,${startY + 10} L90,${startY + 5} L120,${startY + 20} L150,${startY + 30} L180,${endY - 30} L210,${endY - 10} L${graphWidth},${endY}`;
+      } else {
+        // Very complex, long path for critical battery
+        pathData = `M0,${startY} L20,${startY - 8} L40,${startY + 5} L60,${startY - 3} L80,${startY + 12} L100,${startY + 8} L120,${startY + 25} L140,${startY + 35} L160,${startY + 45} L180,${endY - 40} L200,${endY - 20} L220,${endY - 5} L${graphWidth},${endY}`;
+      }
+      
+      return { pathData, endX: graphWidth, endY };
+    }
+
+    // Generate shadow path that fills the area under the line
+    function generateShadowPath(batteryPercent) {
+      const graphWidth = 240;
+      const graphHeight = 280;
+      const startY = 50;
+      const bottomY = graphHeight - 10; // Bottom of the graph area
+      
+      // Calculate end position (same as main line)
+      let endY;
+      if (batteryPercent >= 75) {
+        endY = 50 + (75 - batteryPercent) * 0.8;
+      } else if (batteryPercent >= 45) {
+        endY = 110 + (75 - batteryPercent) * 1.2;
+      } else if (batteryPercent >= 20) {
+        endY = 140 + (45 - batteryPercent) * 2;
+      } else {
+        endY = 220 + (20 - batteryPercent) * 3;
+      }
+      
+      endY = Math.min(Math.max(endY, 40), 260);
+      
+      // Create shadow path that follows the main line and fills down to bottom
+      let shadowPath;
+      
+      if (batteryPercent >= 75) {
+        shadowPath = `M0,${startY} Q60,${startY - 5} 120,${startY + 10} T${graphWidth},${endY} L${graphWidth},${bottomY} L0,${bottomY} Z`;
+      } else if (batteryPercent >= 45) {
+        shadowPath = `M0,${startY} Q40,${startY - 8} 80,${startY + 15} Q140,${startY + 25} 200,${endY - 20} T${graphWidth},${endY} L${graphWidth},${bottomY} L0,${bottomY} Z`;
+      } else if (batteryPercent >= 20) {
+        shadowPath = `M0,${startY} L30,${startY - 5} L60,${startY + 10} L90,${startY + 5} L120,${startY + 20} L150,${startY + 30} L180,${endY - 30} L210,${endY - 10} L${graphWidth},${endY} L${graphWidth},${bottomY} L0,${bottomY} Z`;
+      } else {
+        shadowPath = `M0,${startY} L20,${startY - 8} L40,${startY + 5} L60,${startY - 3} L80,${startY + 12} L100,${startY + 8} L120,${startY + 25} L140,${startY + 35} L160,${startY + 45} L180,${endY - 40} L200,${endY - 20} L220,${endY - 5} L${graphWidth},${endY} L${graphWidth},${bottomY} L0,${bottomY} Z`;
+      }
+      
+      return shadowPath;
+    }
+
+    // Update battery display
+    function updateBatteryDisplay(level, charging = false) {
+      const percentage = Math.round(level);
+      const batteryBar = document.getElementById('batteryBar');
+      const batteryPercentage = document.getElementById('batteryPercentage');
+      const batteryStatus = document.getElementById('batteryStatus');
+      const batteryPath = document.getElementById('batteryPath');
+      const batteryShadow = document.getElementById('batteryShadow');
+      const batteryDot = document.getElementById('batteryDot');
+
+      // Update percentage display
+      batteryPercentage.textContent = percentage + '%';
+      
+      // Update battery bar
+      batteryBar.style.width = percentage + '%';
+      
+      // Update colors and status based on battery level
+      const isLow = percentage <= 20;
+      const isCritical = percentage <= 10;
+      
+      batteryBar.classList.toggle('low', isLow);
+      batteryPath.classList.toggle('low', isLow);
+      batteryShadow.classList.toggle('low', isLow);
+      batteryDot.classList.toggle('low', isLow);
+      batteryStatus.classList.toggle('low', isLow && !charging);
+      batteryStatus.classList.toggle('charging', charging);
+      
+      // Update shadow gradient
+      if (isLow) {
+        batteryShadow.setAttribute('fill', 'url(#shadowGradientRed)');
+      } else {
+        batteryShadow.setAttribute('fill', 'url(#shadowGradient)');
+      }
+      
+      // Update status text
+      batteryStatus.textContent = getBatteryStatus(percentage, charging);
+      
+      // Generate and update graph paths
+      const { pathData, endX, endY } = generateGraphPath(percentage);
+      const shadowPathData = generateShadowPath(percentage);
+      
+      batteryPath.setAttribute('d', pathData);
+      batteryShadow.setAttribute('d', shadowPathData);
+      batteryDot.setAttribute('cx', endX);
+      batteryDot.setAttribute('cy', endY);
+    }
+
+    // Try to use Battery API if available
+    if ('getBattery' in navigator) {
+      navigator.getBattery().then(function(battery) {
+        isSupported = true;
+        
+        function updateBattery() {
+          const level = battery.level * 100;
+          updateBatteryDisplay(level, battery.charging);
+        }
+
+        // Initial update
+        updateBattery();
+
+        // Listen for battery events
+        battery.addEventListener('chargingchange', updateBattery);
+        battery.addEventListener('levelchange', updateBattery);
+      }).catch(function() {
+        // Fallback to demo mode
+        startDemoMode();
+      });
+    } else {
+      // Fallback to demo mode
+      startDemoMode();
+    }
+
+    // Demo mode with realistic battery simulation
+    function startDemoMode() {
+      let currentLevel = 64; // Start at 64% like in the image
+      let decreasing = true;
+      
+      updateBatteryDisplay(currentLevel);
+      
+      // Simulate battery drain/charge every 3 seconds
+      setInterval(() => {
+        if (decreasing) {
+          currentLevel -= Math.random() * 2 + 0.5; // Decrease by 0.5-2.5%
+          if (currentLevel <= 5) {
+            decreasing = false; // Start charging when very low
+          }
+        } else {
+          currentLevel += Math.random() * 3 + 1; // Increase by 1-4%
+          if (currentLevel >= 95) {
+            decreasing = true; // Start draining when high
+          }
+        }
+        
+        currentLevel = Math.max(1, Math.min(100, currentLevel));
+        updateBatteryDisplay(currentLevel, !decreasing);
+      }, 3000);
+    }
+
+    // Initialize everything when DOM is loaded
+    document.addEventListener('DOMContentLoaded', function() {
+      initializeScrollBehavior();
+      
+      // If Battery API doesn't work within 1 second, start demo
+      setTimeout(() => {
+        if (!isSupported) {
+          startDemoMode();
+        }
+      }, 1000);
+    });
+
+    // Reinitialize scroll behavior on window resize
+    window.addEventListener('resize', function() {
+      setTimeout(initializeScrollBehavior, 100);
+    });
+  </script>
+</body>
+</html>

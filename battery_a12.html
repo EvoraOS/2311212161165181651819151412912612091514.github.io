@@ -151,8 +151,8 @@
       background: white;
       border-radius: 16px;
       padding: 24px;
-      margin-bottom: 16px;
-      box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+      margin-bottom: 5px;
+      box-shadow: 0 0px 0px rgba(0, 0, 0, 0.1);
     }
     
     .battery-info {
@@ -179,7 +179,7 @@
       background: white;
       border-radius: 16px;
       padding: 24px;
-      box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+      box-shadow: 0 0px 0px rgba(0, 0, 0, 0.1);
     }
     
     .graph-container {
@@ -348,6 +348,60 @@
       border-bottom-left-radius: 12px;
       border-bottom-right-radius: 12px;
     }
+    
+    .arrow-icon {
+  width: 20px;
+  height: 20px;
+  background-image: url("https://api.iconify.design/material-symbols:chevron-right.svg?color=%238E8E93");
+  background-repeat: no-repeat;
+  background-position: center;
+  background-size: contain;
+  opacity: 0.8;
+        }
+
+    .recommended-wallpaper-box {
+  background: white;
+  border-radius: 16px;
+  padding: 24px;
+  margin: 0 16px 16px 16px; /* same side margins as others */
+  box-shadow: 0 0px 0px rgba(0, 0, 0, 0.1);
+  cursor: pointer;
+}
+
+.recommended-wallpaper-content {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.recommended-wallpaper-text {
+  font-size: 1rem;
+  color: #000;
+  font-weight: 500;
+}
+
+.arrow-icon {
+  width: 20px;
+  height: 20px;
+  background-image: url("https://api.iconify.design/material-symbols:chevron-right.svg?color=%238E8E93");
+  background-repeat: no-repeat;
+  background-position: center;
+  background-size: contain;
+  opacity: 0.8;
+      }
+
+    .charging-tips-list {
+  padding-left: 20px;
+  color: #8E8E93;
+  font-size: 0.95rem;
+  font-weight: 500;
+  list-style-type: decimal;
+  margin: 0;
+}
+.charging-tips-list li {
+  margin-bottom: 8px;
+  line-height: 1.5;
+}
   </style>
 </head>
 <body>
@@ -417,7 +471,28 @@
       </div>
     </div>
   </div>
+  
+<!-- Recommended Wallpapers - white box -->
+<div class="recommended-wallpaper-box" onclick="window.location.href='wallpapers.html'">
+  <div class="recommended-wallpaper-content">
+    <div class="recommended-wallpaper-text">Recommended Wallpapers</div>
+    <div class="arrow-icon"></div>
+  </div>
+</div>
 
+  <!-- Charging Tips - white box -->
+<div class="recommended-wallpaper-box">
+  <div class="recommended-wallpaper-content" style="flex-direction: column; align-items: flex-start;">
+    <div class="recommended-wallpaper-text" style="margin-bottom: 12px;">Charging Tips:</div>
+    <ul class="charging-tips-list">
+      <li>Don't charge your phone to 100% all the time — 80-90% is healthier.</li>
+      <li>Avoid using your phone while charging — it causes heat & battery stress.</li>
+      <li>Use original or certified fast chargers only — cheap ones damage battery cycles.</li>
+      <li>Turn on Battery Saver at night — even if battery is full, it reduces background drain.</li>
+    </ul>
+  </div>
+</div>
+  
   <!-- Popup overlay and menu -->
   <div class="popup-overlay" id="popupOverlay">
     <div class="popup-menu" id="popupMenu">
